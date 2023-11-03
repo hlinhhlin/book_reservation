@@ -1,6 +1,9 @@
 // app.js or index.js
 
 import React, { useState, useEffect } from 'react';
+import Button from '@mui/material/Button';
+import NavBar from './component/Navbar';
+
 
 function App() {
   const [books, setBooks] = useState([]);
@@ -19,6 +22,7 @@ function App() {
 
   return (
     <div>
+      <NavBar/>
       <h1>Book List</h1>
       <ul>
         {books.map(book => (
