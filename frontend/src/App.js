@@ -1,38 +1,37 @@
-// app.js or index.js
-
 import React, { useState, useEffect } from 'react';
-import Button from '@mui/material/Button';
-import NavBar from './component/Navbar';
+import './style.css'; 
 
-
-function App() {
-  const [books, setBooks] = useState([]);
+function Home() {
+  const [genres, setGenres] = useState([]);
 
   useEffect(() => {
-    // Fetch books when the component mounts
-    fetch('http://localhost:3000/books/all')
+    // Fetch genres when the component mounts
+    fetch('http://localhost:3000/genres')
       .then(response => response.json())
       .then(data => {
-        setBooks(data.books); // Update the state with the fetched books
+        setGenres(data.genre); // Update the state with the fetched genres
       })
       .catch(error => {
-        console.log('Error fetching books:', error);
+        console.log('Error fetching genres:', error);
       });
   }, []);
 
   return (
-    <div>
-      <NavBar/>
-      <h1>Book List</h1>
-      <ul>
-        {books.map(book => (
-          <li key={book.Book_ID}>
-            <strong>Title:</strong> {book.Title} - <strong>Status:</strong> {book.Status}
-          </li>
-        ))}
-      </ul>
+    <div className="book-grid">
+        <div className="book-item">
+            <img src="bookcover1.jpg" alt="Book 1"/>
+            <p className="genre">Fiction</p>
+        </div>
+        <div className="book-item">
+            <img src="bookcover2.jpg" alt="Book 2"/>
+            <p className="genre">Mystery</p>
+        </div>
+        <div className="book-item">
+            <img src="bookcover3.jpg" alt="Book 3"/>
+            <p className="genre">Romance</p>
+        </div>
     </div>
   );
 }
 
-export default App;
+export default Home;
