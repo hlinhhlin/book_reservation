@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import './style.css'; 
+import '../style.css'; 
 
-function App() {
+function Home() {
   const [genres, setGenres] = useState([]);
 
   useEffect(() => {
@@ -34,4 +34,4 @@ function App() {
   );
 }
 
-export default App;
+export default Home;
