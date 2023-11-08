@@ -49,3 +49,7 @@
     margin: 20px;
     cursor: pointer;
   }
+
+  .blended-background {
+    background: linear-gradient(#FF9800, #EFBA00); /* Adjust the colors as needed */
+  }
