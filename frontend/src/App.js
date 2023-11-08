@@ -1,37 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import './style.css'; 
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Home from './component/Home';
 
-function App() {
-  const [genres, setGenres] = useState([]);
-
-  useEffect(() => {
-    // Fetch genres when the component mounts
-    fetch('http://localhost:3000/genres')
-      .then(response => response.json())
-      .then(data => {
-        setGenres(data.genre); // Update the state with the fetched genres
-      })
-      .catch(error => {
-        console.log('Error fetching genres:', error);
-      });
-  }, []);
-
+export default function App() {
   return (
-    <div className="book-grid">
-        <div className="book-item">
-            <img src="bookcover1.jpg" alt="Book 1"/>
-            <p className="genre">Fiction</p>
-        </div>
-        <div className="book-item">
-            <img src="bookcover2.jpg" alt="Book 2"/>
-            <p className="genre">Mystery</p>
-        </div>
-        <div className="book-item">
-            <img src="bookcover3.jpg" alt="Book 3"/>
-            <p className="genre">Romance</p>
-        </div>
-    </div>
+    <Router>
+      <div>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          {/* Define more routes as needed */}
+        </Routes>
+      </div>
+    </Router>
   );
 }
-
-export default App;

@@ -1,8 +1,10 @@
-// index.js
-
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App'; // Import the App component
-import Home from './component/Home';
+import App from './App'
 
-ReactDOM.render(<Home />, document.getElementById('root')); // Assuming you have a div with the id 'root' in your HTML
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root')
+);
