@@ -8,8 +8,14 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import Alert from '@mui/material/Alert';
+import { useNavigate } from "react-router-dom";
+
 
 export default function SignUp() {
+    const [passwordsMatch, setPasswordsMatch] = useState(true);
+    const navigate = useNavigate();
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -19,11 +25,12 @@ export default function SignUp() {
       
         if (enteredPassword !== enteredPasswordConfirmation) {
           console.log("Password and password confirmation do not match");
+          setPasswordsMatch(false);
           return;
         }
       
         try {
-          const response = await fetch("/addUser", {
+          const response = await fetch("http://localhost:5000/addUser", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -51,7 +58,8 @@ export default function SignUp() {
       
           const result = await response.json();
           console.log(result); // Handle the response from the server
-      
+          navigate('/');
+
           // Continue with other actions or state updates if needed
         } catch (error) {
           console.error("Error:", error);
@@ -212,12 +220,15 @@ export default function SignUp() {
                 type="password"
               />
             </Grid>
+            {!passwordsMatch && (
+          <Alert severity="error" variant="filled" sx={{mt:3, mx:'auto'}}>Password and password confirmation do not match</Alert>
+        )}
           </Grid>
           <Button
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+            sx={{ mt: 1, mb: 2 }}
           >
             Sign Up
           </Button>
