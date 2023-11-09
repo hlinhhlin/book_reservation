@@ -32,7 +32,11 @@ export default function LogIn() {
           alignItems: "center",
         }}
       >
-        <Typography component="h1" variant="h5">
+        <Typography variant="h4" component="div" fontWeight={'bold'} sx={{mb:3}}>
+          <span style={{ color: 'black' }}>Welcome to </span>
+          <span style={{ color: 'orange' }}>BookBelay</span>
+        </Typography>
+        <Typography variant="h5" sx={{fontWeight: 'bold'}}>
           Sign in
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
@@ -64,7 +68,7 @@ export default function LogIn() {
           </Button>
           <Grid container>
             <Grid item>
-              <Link to="/signup">
+              <Link href="/signup">
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>

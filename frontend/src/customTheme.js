@@ -2,6 +2,9 @@
 import { createTheme } from '@mui/material/styles';
 
 const customTheme = createTheme({
+  typography: {
+    fontFamily: 'Sarabun, sans-serif',
+  },
   palette: {
     primary: {
       main: '#FF9800',

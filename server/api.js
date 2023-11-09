@@ -101,5 +101,19 @@ router.get('/book/:id', (req, res) => {
   });
 });
 
+router.post('/addUser', (req, res) => {
+  const { firstname, lastname, tel, email, no, soi, street, subdistrict, district, province, zipcode, username, password } = req.body;
+
+  const sql = 'INSERT INTO User (FirstName, LastName, TelNumber, Email, Add_No, Add_Soi, Add_Street, Add_Subdistrict, Add_District, Add_Province, Add_ZipCode, Username, Password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+  db.query(sql, [firstname, lastname, tel, email, no, soi, street, subdistrict, district, province, zipcode, username, password], (err, result) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Error inserting data into the database' });
+    } else {
+      res.json({ success: true });
+    }
+  });
+});
+
 
 module.exports = router;

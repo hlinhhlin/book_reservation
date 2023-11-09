@@ -4,6 +4,7 @@ import App from './App'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { ThemeProvider } from '@mui/material/styles';
 import customTheme from './customTheme';
+// import './index.css';
 
 ReactDOM.render(
     <ThemeProvider theme={customTheme}>
