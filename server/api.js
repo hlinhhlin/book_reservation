@@ -4,7 +4,6 @@ const db = require('./db'); // Import the 'db' connection module
 
 router.get(`/books/all`, (req, res) => {
   const query = "SELECT * FROM book"; // Adjust the query based on your database schema
-
   db.query(query, (err, results) => {
     if (err) {
       res.status(500).json({ error: err.message });
@@ -15,7 +14,6 @@ router.get(`/books/all`, (req, res) => {
 });
 
 router.get("/genres", (req, res) => {
-
   const query = `SELECT GenreName FROM genre`; 
 
   db.query(query, (err, results) => {
