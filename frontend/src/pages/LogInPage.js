@@ -37,7 +37,6 @@ export default function LogIn() {
       }
 
       const authenticatedUser = await response.json();
-      console.log(authenticatedUser); // Handle the response from the server
       loginUser(authenticatedUser);
       login();
       navigate("/");
