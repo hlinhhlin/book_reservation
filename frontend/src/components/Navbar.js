@@ -125,7 +125,7 @@ export default function NavBarAndDrawer() {
             sx={{
               flexGrow: 1,
               fontSize: 28,
-              fontWeight: 550,
+              fontWeight: 3000,
               letterSpacing: 3,
             }}
           >

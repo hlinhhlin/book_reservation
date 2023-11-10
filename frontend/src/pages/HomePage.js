@@ -1,28 +1,35 @@
-import React, { useState, useEffect } from 'react';
-import '../style.css'; 
+import React, { useState, useEffect } from "react";
+import "../style.css";
 
 function HomePage() {
   const [genres, setGenres] = useState([]);
 
+  const handleClickGenre = () => {
+    console.log('KIKI');
+  }
+
   useEffect(() => {
     // Fetch genres when the component mounts
-    fetch('http://localhost:5000/genres')
-      .then(response => response.json())
-      .then(data => {
+    fetch("http://localhost:5000/genres")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
         setGenres(data.genre); // Update the state with the fetched genres
+        console.log(data.genre);
       })
-      .catch(error => {
-        console.log('Error fetching genres:', error);
+      .catch((error) => {
+        console.log("Error fetching genres:", error);
       });
   }, []);
 
   return (
     <div className="book-grid">
-        <div className="book-item">
-            <img src="bookcover1.jpg" alt="Book 1"/>
-            <p className="genre">Fiction</p>
+      {genres.map(({ GenreName }) => (
+        <div className="book-item" key={GenreName} onClick={handleClickGenre}>
+          <p className="genre">{GenreName}</p>
         </div>
-        <div className="book-item">
+      ))}
+      {/* <div className="book-item">
             <img src="bookcover2.jpg" alt="Book 2"/>
             <p className="genre">Mystery</p>
         </div>
@@ -53,8 +60,8 @@ function HomePage() {
         <div className="book-item">
             <img src="bookcover9.jpg" alt="Book 9"/>
             <p className="genre">Kids</p>
-        </div>
-    </div>   
+        </div> */}
+    </div>
   );
 }
 
