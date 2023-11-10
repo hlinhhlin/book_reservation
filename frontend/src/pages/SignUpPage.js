@@ -10,11 +10,15 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Alert from '@mui/material/Alert';
 import { useNavigate } from "react-router-dom";
+import { useUser } from '../UserContext';
+import { useAuth } from "../AuthContext";
 
 
 export default function SignUp() {
     const [passwordsMatch, setPasswordsMatch] = useState(true);
     const navigate = useNavigate();
+    const { loginUser } = useUser();
+    const { isAuthenticated, login, logout } = useAuth();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -28,15 +32,10 @@ export default function SignUp() {
           setPasswordsMatch(false);
           return;
         }
-      
-        try {
-          const response = await fetch("http://localhost:5000/addUser", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              firstname: data.get("firstName"), // Corrected name
+        console.log(data);
+
+        const newUser = {
+          firstname: data.get("firstName"), // Corrected name
               lastname: data.get("lastName"), // Corrected name
               tel: data.get("tel"),
               email: data.get("email"),
@@ -49,7 +48,15 @@ export default function SignUp() {
               zipcode: data.get("zipcode"),
               username: data.get("username"),
               password: enteredPassword,
-            }),
+        }
+
+        try {
+          const response = await fetch("http://localhost:5000/addUser", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newUser),
           });
       
           if (!response.ok) {
@@ -57,7 +64,9 @@ export default function SignUp() {
           }
       
           const result = await response.json();
-          console.log(result); // Handle the response from the server
+          loginUser({ id: result.id, ...newUser });
+          // loginUser(newUser);
+          login();
           navigate('/');
 
           // Continue with other actions or state updates if needed
