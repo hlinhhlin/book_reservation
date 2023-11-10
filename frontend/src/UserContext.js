@@ -7,6 +7,7 @@ export const UserProvider = ({ children }) => {
 
   const loginUser = (userData) => {
     setUser(userData);
+    console.log(userData);
   };
 
   const logoutUser = () => {

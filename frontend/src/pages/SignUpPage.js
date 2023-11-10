@@ -11,12 +11,14 @@ import Container from "@mui/material/Container";
 import Alert from '@mui/material/Alert';
 import { useNavigate } from "react-router-dom";
 import { useUser } from '../UserContext';
+import { useAuth } from "../AuthContext";
 
 
 export default function SignUp() {
     const [passwordsMatch, setPasswordsMatch] = useState(true);
     const navigate = useNavigate();
     const { loginUser } = useUser();
+    const { isAuthenticated, login, logout } = useAuth();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -62,8 +64,9 @@ export default function SignUp() {
           }
       
           const result = await response.json();
-          loginUser(newUser);
+          loginUser({ id: result.id, ...newUser });
           // loginUser(newUser);
+          login();
           navigate('/');
 
           // Continue with other actions or state updates if needed

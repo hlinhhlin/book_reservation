@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "../style.css";
+import { useUser } from "../UserContext";
 
 function HomePage() {
   const [genres, setGenres] = useState([]);
+  const { loginUser } = useUser();
 
   const handleClickGenre = () => {
     console.log('KIKI');
@@ -13,9 +15,7 @@ function HomePage() {
     fetch("http://localhost:5000/genres")
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setGenres(data.genre); // Update the state with the fetched genres
-        console.log(data.genre);
       })
       .catch((error) => {
         console.log("Error fetching genres:", error);

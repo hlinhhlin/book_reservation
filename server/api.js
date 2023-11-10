@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('./db'); // Import the 'db' connection module
+const bcrypt = require('bcrypt');
 
 router.get(`/books/all`, (req, res) => {
   const query = "SELECT * FROM book"; // Adjust the query based on your database schema
@@ -108,7 +109,8 @@ router.post('/addUser', (req, res) => {
       console.error(err);
       res.status(500).json({ error: 'Error inserting data into the database' });
     } else {
-      res.json({ success: true });
+      const userId = result.insertId; // Retrieve the last inserted ID
+      res.json({ id: userId });
     }
   });
 });
@@ -118,32 +120,48 @@ router.post('/authenticateUser', async (req, res) => {
     const { username, password } = req.body;
 
     // Find the user in the database by username
-    const user = await client.db('book-reservation').collection('user').findOne({ Username });
+    const query = 'SELECT * FROM User WHERE Username = ?';
+    db.query(query, [username], async (err, results) => {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
 
-    // If the user is not found, return an error
-    if (!user) {
-      return res.status(401).json({ error: 'Invalid username or password' });
-    }
+      // If the user is not found, return an error
+      if (results.length === 0) {
+        return res.status(401).json({ error: 'Invalid username or password' });
+      }
 
-    // Compare the provided password with the hashed password in the database
-    const passwordMatch = await bcrypt.compare(password, user.password);
+      const user = results[0];
 
-    // If passwords match, return the user data
-    if (passwordMatch) {
-      return res.json({
-        id: user.User_ID,
-        firstname: user.FirstName,
-        lastname: user.LastName,
-        // Add other user details as needed
-      });
-    } else {
-      // If passwords do not match, return an error
-      return res.status(401).json({ error: 'Invalid username or password' });
-    }
+      // Check if the entered password matches the stored password
+      if (password === user.Password) {
+        return res.json({
+          id: user.User_ID,
+          firstname: user.FirstName,
+          lastname: user.LastName,
+          tel: user.TelNumber,
+          email: user.Email,
+          no: user.Add_No,
+          soi: user.Add_Soi,
+          street: user.Add_Street,
+          subdistrict: user.Add_SubDistrict,
+          district: user.Add_District,
+          province: user.Add_Province,
+          zipcode: user.Add_ZipCode,
+          username: user.Username,
+          //UserImage
+        });
+      } else {
+        // If passwords do not match, return an error
+        return res.status(401).json({ error: 'Invalid username or password' });
+      }
+    });
   } catch (error) {
     console.error('Error:', error);
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+
 
 module.exports = router;
