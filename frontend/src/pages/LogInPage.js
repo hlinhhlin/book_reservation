@@ -7,16 +7,49 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "../UserContext";
 
 export default function LogIn() {
-  const handleSubmit = (event) => {
+  const navigate = useNavigate();
+  const { loginUser } = useUser();
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+  
+    try {
+      const response = await fetch("http://localhost:5000/authenticateUser", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: data.get("username"),
+          password: data.get("password"),
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
+      const authenticatedUser = await response.json();
+      console.log(authenticatedUser); // Handle the response from the server
+  
+      // Log in the user after successful authentication
+      loginUser(authenticatedUser);
+      console.log('Login Successful');
+  
+      // Redirect to the homepage
+      navigate('/');
+  
+      // Continue with other actions or state updates if needed
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
+  
 
   return (
     <Container component="main" maxWidth="sm">

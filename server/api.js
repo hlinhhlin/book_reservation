@@ -113,5 +113,37 @@ router.post('/addUser', (req, res) => {
   });
 });
 
+router.post('/authenticateUser', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+
+    // Find the user in the database by username
+    const user = await client.db('book-reservation').collection('user').findOne({ Username });
+
+    // If the user is not found, return an error
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid username or password' });
+    }
+
+    // Compare the provided password with the hashed password in the database
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    // If passwords match, return the user data
+    if (passwordMatch) {
+      return res.json({
+        id: user.User_ID,
+        firstname: user.FirstName,
+        lastname: user.LastName,
+        // Add other user details as needed
+      });
+    } else {
+      // If passwords do not match, return an error
+      return res.status(401).json({ error: 'Invalid username or password' });
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 module.exports = router;
