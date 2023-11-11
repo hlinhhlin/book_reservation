@@ -1,19 +1,15 @@
-
 import React, { useState, useEffect } from "react";
 import "../style.css";
 import { useUser } from "../UserContext";
-import { Divider } from '@mui/material';
-
-
+import { Divider } from "@mui/material";
 
 function HomePage() {
   const [genres, setGenres] = useState([]);
   const { loginUser } = useUser();
 
   const handleClickGenre = () => {
-    // console.log('KIKI');
-  }
 
+  };
   useEffect(() => {
     // Fetch genres when the component mounts
     fetch("http://localhost:5000/genres")
@@ -28,11 +24,13 @@ function HomePage() {
 
   return (
     <div className="book-grid">
-      {genres.map(({ GenreName }) => (
+      {genres.map(({ GenreName, GenreImage }) => (
         <div className="book-item" key={GenreName} onClick={handleClickGenre}>
+          <img src={`data:image/png;base64,${GenreImage}`} />
           <p className="genre">{GenreName}</p>
         </div>
       ))}
+
       {/* <div className="book-item">
             <img src="bookcover2.jpg" alt="Book 2"/>
             <p className="genre">Mystery</p>
