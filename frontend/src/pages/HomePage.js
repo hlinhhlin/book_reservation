@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../style.css'; 
+import { Divider } from '@mui/material';
 
 function HomePage() {
   const [genres, setGenres] = useState([]);
