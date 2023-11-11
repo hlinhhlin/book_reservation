@@ -11,7 +11,7 @@ function HomePage() {
   const { loginUser } = useUser();
 
   const handleClickGenre = () => {
-    console.log('KIKI');
+    // console.log('KIKI');
   }
 
   useEffect(() => {
