@@ -24,10 +24,11 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
 import "../style.css";
+import { useAuth } from "../AuthContext";
 
 export default function NavBarAndDrawer() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { isAuthenticated, login, logout } = useAuth();
 
   const toggleDrawer = (open) => (event) => {
     if (
@@ -104,7 +105,7 @@ export default function NavBarAndDrawer() {
       {
         isAuthenticated ? ( // Use the correct conditional rendering syntax
           <List>
-            <ListItemButton>
+            <ListItemButton onClick={logout}>
               <ListItemIcon>
                 <LogoutIcon />
               </ListItemIcon>
@@ -125,7 +126,7 @@ export default function NavBarAndDrawer() {
             sx={{
               flexGrow: 1,
               fontSize: 28,
-              fontWeight: 550,
+              fontWeight: 3000,
               letterSpacing: 3,
             }}
           >
