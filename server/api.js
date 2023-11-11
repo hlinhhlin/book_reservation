@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const db = require('./db'); // Import the 'db' connection module
-const bcrypt = require('bcrypt');
 
 router.get(`/books/all`, (req, res) => {
   const query = "SELECT * FROM book"; // Adjust the query based on your database schema
@@ -15,16 +14,23 @@ router.get(`/books/all`, (req, res) => {
 });
 
 router.get("/genres", (req, res) => {
-  const query = `SELECT GenreName FROM genre`; 
+  const query = `SELECT GenreName, GenreImage FROM genre`; 
 
   db.query(query, (err, results) => {
     if (err) {
       res.status(500).json({ error: err.message });
       return;
     }
-    res.json({ genre: results });
+    // Convert BLOB data to base64
+    const genresWithBase64 = results.map(({ GenreName, GenreImage }) => ({
+      GenreName,
+      GenreImage: GenreImage.toString('base64'),
+    }));
+
+    res.json({ genre: genresWithBase64 });
   });
 });
+
 
 router.get("/genre/:genre", (req, res) => {
   const genre = req.params.genre; // Extract the genre from the URL
@@ -161,7 +167,6 @@ router.post('/authenticateUser', async (req, res) => {
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
 
 
 module.exports = router;
