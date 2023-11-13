@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Typography, Box, TextField, Grid, Paper} from "@mui/material";
 
 const SearchPage = () => {
