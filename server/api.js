@@ -117,9 +117,24 @@ router.get("/book/:id", (req, res) => {
   });
 });
 
+router.get('/books/latest', (req, res) => {
+  const query = 'SELECT * FROM book ORDER BY Book_ID DESC LIMIT 6';
+
+  db.query(query, (err, results) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+
+    res.json({ books: results });
+  });
+});
+
+
+// router.post('/addUser', (req, res) => {
+//   const { firstname, lastname, tel, email, no, soi, street, subdistrict, district, province, zipcode, username, password } = req.body;
 // router.get('/book/:id', (req, res) => {
 //   const bookId = req.params.id; // Extract the book ID from the URL parameter
-
 //   const query = `
 //     SELECT
 //       book.*,
@@ -334,5 +349,6 @@ router.get("/cat-by-publisher/:id", (req, res) => {
     }
   });
 });
+
 
 module.exports = router;
