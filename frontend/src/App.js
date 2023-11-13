@@ -6,6 +6,7 @@ import Login from "./pages/LogInPage";
 import SignUp from "./pages/SignUpPage";
 import { UserProvider } from "./UserContext";
 import { AuthProvider } from "./AuthContext";
+import QRcode from "./pages/QRcode";
 
 export default function App() {
   return (
@@ -16,9 +17,10 @@ export default function App() {
             <NavBar />
             <Routes>
               <Route path="/" element={<HomePage />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<SignUp />} />
               <Route path="/search" element={<SearchPage />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<SignUp />} />
+              <Route path="/qrcode" element={<QRcode/>} />
             </Routes>
           </div>
         </UserProvider>
