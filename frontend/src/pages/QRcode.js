@@ -3,9 +3,10 @@ import { Box, Typography } from "@mui/material";
 import QRCode from "react-qr-code";
 import { useUser } from "../UserContext";
 
-const { user, loginUser, logoutUser } = useUser();
 
 const QRcode = () => {
+  
+  const { user, loginUser, logoutUser } = useUser();
 
     return (
       <div className="qrcode-container">
