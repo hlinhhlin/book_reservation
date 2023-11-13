@@ -9,7 +9,6 @@ import ProfilePage from "./pages/ProfilePage";
 
 import { UserProvider } from "./UserContext";
 import { AuthProvider } from "./AuthContext";
-import QRcode from "./pages/QRcode";
 
 
 export default function App() {
@@ -21,13 +20,11 @@ export default function App() {
             <NavBar />
             <Routes>
               <Route path="/" element={<HomePage />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<SignUp />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<SignUp />} />
               <Route path="/search" element={<SearchPage />} />
-              
               <Route path="/qrcode" element={<QRcode />} />
               <Route path="/profile" element={<ProfilePage />} />
-
             </Routes>
           </div>
         </UserProvider>
