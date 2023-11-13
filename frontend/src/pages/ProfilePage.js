@@ -4,6 +4,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import "../style.css";
 import { useNavigate } from 'react-router-dom';
 import EditProfilePage from './EditProfilePage';
+import TopUpPage from "./TopUpPage";
 
 const ProfilePage = () => {
 
@@ -12,7 +13,10 @@ const ProfilePage = () => {
     const handleEditClick = () => {
         navigate('/editprofile');
       };
-    
+
+    const handleTopUpClick = () => {
+        navigate('/topUp');
+      };
 
     return (
         <div className="profile-container">
@@ -22,7 +26,7 @@ const ProfilePage = () => {
             <IconButton onClick={handleEditClick}> <EditIcon/> </IconButton>
             </div>
             <div style={{ display: "flex", marginTop: "60px" }}>
-                <Button variant="contained" color="primary" style={{ width: "210px", height: "80px", marginRight: "40px", textTransform: "none", fontSize: '20px' }}>
+                <Button onClick={handleTopUpClick} variant="contained" color="primary" style={{ width: "210px", height: "80px", marginRight: "40px", textTransform: "none", fontSize: '20px' }}>
                     + Topup eMoney
                 </Button>
                 <Typography style={{ width: "210px", height: "80px", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid #ccc", borderRadius: '5px', fontSize: '20px' }}>
