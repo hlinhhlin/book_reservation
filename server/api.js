@@ -1,21 +1,21 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const db = require('./db'); // Import the 'db' connection module
+const db = require("./db"); // Import the 'db' connection module
 
-router.get(`/books/all`, (req, res) => {
-  const query = "SELECT * FROM book"; // Adjust the query based on your database schema
-  db.query(query, (err, results) => {
-    if (err) {
-      res.status(500).json({ error: err.message });
-      return;
-    }
-    res.json({ books: results });
-  });
-});
+// router.get(`/books/all`, (req, res) => {
+//   const query = "SELECT * FROM book"; // Adjust the query based on your database schema
+//   db.query(query, (err, results) => {
+//     if (err) {
+//       res.status(500).json({ error: err.message });
+//       return;
+//     }
+//     res.json({ books: results });
+//   });
+// });
 
+//HomePage
 router.get("/genres", (req, res) => {
-  const query = `SELECT GenreName, GenreImage FROM genre`; 
-
+  const query = `SELECT GenreName, GenreImage FROM genre`;
   db.query(query, (err, results) => {
     if (err) {
       res.status(500).json({ error: err.message });
@@ -24,17 +24,15 @@ router.get("/genres", (req, res) => {
     // Convert BLOB data to base64
     const genresWithBase64 = results.map(({ GenreName, GenreImage }) => ({
       GenreName,
-      GenreImage: GenreImage.toString('base64'),
+      GenreImage: GenreImage.toString("base64"),
     }));
-
     res.json({ genre: genresWithBase64 });
   });
 });
 
-
+//HomePage>Genre
 router.get("/genre/:genre", (req, res) => {
   const genre = req.params.genre; // Extract the genre from the URL
-
   const query = `SELECT PenName, Title, 
   CASE 
       WHEN book.Status = 0 THEN 'available'
@@ -51,14 +49,13 @@ WHERE genre.GenreName = '${genre}';
       res.status(500).json({ error: err.message });
       return;
     }
-    
     res.json({ books: results });
   });
 });
 
-router.get('/search/:searchword', (req, res) => {
+//SearchPage
+router.get("/search/:searchword", (req, res) => {
   const searchQuery = req.params.searchword; // Get the search query from the request's query parameters
-
   // SQL query to search for books by 'Title,' 'PenName,' or 'PublisherName'
   const query = `
     SELECT PenName, Title,
@@ -87,19 +84,33 @@ router.get('/search/:searchword', (req, res) => {
   );
 });
 
-router.get('/book/:id', (req, res) => {
+// BookDetail
+router.get("/book/:id", (req, res) => {
   const bookId = req.params.id; // Extract the book ID from the URL parameter
 
-  const query = `SELECT * FROM book WHERE Book_ID = ?`; // Use a prepared statement
+  const query = `SELECT
+      book.*,
+      author.PenName,
+      author.Biography,
+      author.AuthorImage,
+      publisher.PublisherName
+    FROM
+      book
+    JOIN
+      author ON book.Author_ID = author.Author_Id
+    JOIN
+      publisher ON book.Publisher_ID = publisher.Publisher_ID
+    WHERE
+      book.Book_ID = ?;`; // Use a prepared statement
 
   db.query(query, [bookId], (err, results) => {
     if (err) {
       res.status(500).json({ error: err.message });
       return;
     }
-    
+
     if (results.length === 0) {
-      res.status(404).json({ error: 'Book not found' });
+      res.status(404).json({ error: "Book not found" });
     } else {
       res.json({ book: results[0] }); // Assuming the query returns one book
     }
@@ -120,27 +131,106 @@ router.get('/books/latest', (req, res) => {
 });
 
 
-router.post('/addUser', (req, res) => {
-  const { firstname, lastname, tel, email, no, soi, street, subdistrict, district, province, zipcode, username, password } = req.body;
+// router.post('/addUser', (req, res) => {
+//   const { firstname, lastname, tel, email, no, soi, street, subdistrict, district, province, zipcode, username, password } = req.body;
+// router.get('/book/:id', (req, res) => {
+//   const bookId = req.params.id; // Extract the book ID from the URL parameter
+//   const query = `
+//     SELECT
+//       book.*,
+//       author.PenName,
+//       author.Biography AS AuthorBiography,
+//       CONVERT(author.AuthorImage USING utf8) AS AuthorImageBase64,
+//       publisher.PublisherName,
+//       CONVERT(publisher.PublisherImage USING utf8) AS PublisherImageBase64,
+//       CONVERT(book.BookImage USING utf8) AS BookImageBase64
+//     FROM
+//       book
+//     JOIN
+//       author ON book.Author_ID = author.Author_Id
+//     JOIN
+//       publisher ON book.Publisher_ID = publisher.Publisher_ID
+//     WHERE
+//       book.Book_ID = ?;
+//   `; // Use a prepared statement
 
-  const sql = 'INSERT INTO User (FirstName, LastName, TelNumber, Email, Add_No, Add_Soi, Add_Street, Add_Subdistrict, Add_District, Add_Province, Add_ZipCode, Username, Password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-  db.query(sql, [firstname, lastname, tel, email, no, soi, street, subdistrict, district, province, zipcode, username, password], (err, result) => {
-    if (err) {
-      console.error(err);
-      res.status(500).json({ error: 'Error inserting data into the database' });
-    } else {
-      const userId = result.insertId; // Retrieve the last inserted ID
-      res.json({ id: userId });
+//   db.query(query, [bookId], (err, results) => {
+//     if (err) {
+//       res.status(500).json({ error: err.message });
+//       return;
+//     }
+
+//     if (results.length === 0) {
+//       res.status(404).json({ error: 'Book not found' });
+//     } else {
+//       // Convert images to base64
+//       const bookData = results[0];
+//       bookData.AuthorImageBase64 = bookData.AuthorImageBase64.toString('base64');
+//       bookData.PublisherImageBase64 = bookData.PublisherImageBase64.toString('base64');
+//       bookData.BookImageBase64 = bookData.BookImageBase64.toString('base64');
+//       res.json({ bookData }); // Assuming the query returns one book
+//     }
+//   });
+// });
+
+//SignUpUser
+router.post("/addUser", (req, res) => {
+  const {
+    firstname,
+    lastname,
+    tel,
+    email,
+    no,
+    soi,
+    street,
+    subdistrict,
+    district,
+    province,
+    zipcode,
+    username,
+    password,
+  } = req.body;
+
+  const sql =
+    "INSERT INTO User (FirstName, LastName, TelNumber, Email, Add_No, Add_Soi, Add_Street, Add_Subdistrict, Add_District, Add_Province, Add_ZipCode, Username, Password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  db.query(
+    sql,
+    [
+      firstname,
+      lastname,
+      tel,
+      email,
+      no,
+      soi,
+      street,
+      subdistrict,
+      district,
+      province,
+      zipcode,
+      username,
+      password,
+    ],
+    (err, result) => {
+      if (err) {
+        console.error(err);
+        res
+          .status(500)
+          .json({ error: "Error inserting data into the database" });
+      } else {
+        const userId = result.insertId; // Retrieve the last inserted ID
+        res.json({ id: userId });
+      }
     }
-  });
+  );
 });
 
-router.post('/authenticateUser', async (req, res) => {
+//LogInUser
+router.post("/authenticateUser", async (req, res) => {
   try {
     const { username, password } = req.body;
 
     // Find the user in the database by username
-    const query = 'SELECT * FROM User WHERE Username = ?';
+    const query = "SELECT * FROM User WHERE Username = ?";
     db.query(query, [username], async (err, results) => {
       if (err) {
         return res.status(500).json({ error: err.message });
@@ -148,7 +238,7 @@ router.post('/authenticateUser', async (req, res) => {
 
       // If the user is not found, return an error
       if (results.length === 0) {
-        return res.status(401).json({ error: 'Invalid username or password' });
+        return res.status(401).json({ error: "Invalid username or password" });
       }
 
       const user = results[0];
@@ -173,15 +263,54 @@ router.post('/authenticateUser', async (req, res) => {
         });
       } else {
         // If passwords do not match, return an error
-        return res.status(401).json({ error: 'Invalid username or password' });
+        return res.status(401).json({ error: "Invalid username or password" });
       }
     });
   } catch (error) {
-    console.error('Error:', error);
-    return res.status(500).json({ error: 'Internal Server Error' });
+    console.error("Error:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
+//Author
+router.get("/author/:id", (req, res) => {
+  const authorId = req.params.id; // Extract the book ID from the URL parameter
+
+  const query = `SELECT * FROM author WHERE Author_ID = ?`; // Use a prepared statement
+
+  db.query(query, [authorId], (err, results) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+
+    if (results.length === 0) {
+      res.status(404).json({ error: "Author not found" });
+    } else {
+      res.json({ author: results[0] }); // Assuming the query returns one book
+    }
+  });
+});
+
+//Publisher
+router.get("/publisher/:id", (req, res) => {
+  const publisherId = req.params.id; // Extract the book ID from the URL parameter
+
+  const query = `SELECT * FROM publisher WHERE Publisher_ID = ?`; // Use a prepared statement
+
+  db.query(query, [publisherId], (err, results) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+
+    if (results.length === 0) {
+      res.status(404).json({ error: "Publisher not found" });
+    } else {
+      res.json({ publisher: results[0] }); // Assuming the query returns one book
+    }
+  });
+});
 
 
 

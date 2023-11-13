@@ -8,9 +8,8 @@ function HomePage() {
   const { loginUser } = useUser();
 
   const handleClickGenre = () => {
-    console.log("KIKI");
-  };
 
+  };
   useEffect(() => {
     // Fetch genres when the component mounts
     fetch("http://localhost:5000/genres")

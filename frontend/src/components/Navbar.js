@@ -83,7 +83,7 @@ export default function NavBarAndDrawer() {
         {isAuthenticated ? (
           <>
             <ListItem disablePadding>
-              <ListItemButton>
+              <ListItemButton component={Link} to="/qrcode">
                 <ListItemIcon>
                   <QrCode2Icon />
                 </ListItemIcon>
