@@ -297,4 +297,42 @@ router.get("/publisher/:id", (req, res) => {
   });
 });
 
+router.get("/cat-by-author/:id", (req, res) => {
+  const authorId = req.params.id; // Extract the book ID from the URL parameter
+
+  const query = `SELECT * FROM book WHERE Author_ID = ?`; // Use a prepared statement
+
+  db.query(query, [authorId], (err, results) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+
+    if (results.length === 0) {
+      res.status(404).json({ error: "Book written by this author not found" });
+    } else {
+      res.json({ books: results[0] }); // Assuming the query returns one book
+    }
+  });
+});
+
+router.get("/cat-by-publisher/:id", (req, res) => {
+  const publisherId = req.params.id; // Extract the book ID from the URL parameter
+
+  const query = `SELECT * FROM book WHERE Publisher_ID = ?`; // Use a prepared statement
+
+  db.query(query, [publisherId], (err, results) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+
+    if (results.length === 0) {
+      res.status(404).json({ error: "Book published by this publisher not found" });
+    } else {
+      res.json({ books: results[0] }); // Assuming the query returns one book
+    }
+  });
+});
+
 module.exports = router;
