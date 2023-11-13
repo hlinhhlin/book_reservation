@@ -1,18 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { Typography, IconButton, Button, Box } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import "../style.css";
-
-
-
+import { useNavigate } from 'react-router-dom';
+import EditProfilePage from './EditProfilePage';
 
 const ProfilePage = () => {
+
+    const navigate = useNavigate();
+
+    const handleEditClick = () => {
+        navigate('/editprofile');
+      };
+    
+
     return (
         <div className="profile-container">
             <img src="user.png" alt="user" className="circle-frame" />
             <div style={{ display: "flex", alignItems: "center" }}>
             <Typography style={{fontSize: '25px', marginRight: "2px"}}>Name-Surname</Typography>
-            <IconButton > <EditIcon/> </IconButton>
+            <IconButton onClick={handleEditClick}> <EditIcon/> </IconButton>
             </div>
             <div style={{ display: "flex", marginTop: "60px" }}>
                 <Button variant="contained" color="primary" style={{ width: "210px", height: "80px", marginRight: "40px", textTransform: "none", fontSize: '20px' }}>

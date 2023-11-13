@@ -6,6 +6,7 @@ import Login from "./pages/LogInPage";
 import SignUp from "./pages/SignUpPage";
 import QRcode from "./pages/QRcode";
 import ProfilePage from "./pages/ProfilePage";
+import EditProfilePage from "./pages/EditProfilePage";
 
 import { UserProvider } from "./UserContext";
 import { AuthProvider } from "./AuthContext";
@@ -25,6 +26,7 @@ export default function App() {
               <Route path="/search" element={<SearchPage />} />
               <Route path="/qrcode" element={<QRcode />} />
               <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/editprofile" element={<EditProfilePage />} /> 
             </Routes>
           </div>
         </UserProvider>
