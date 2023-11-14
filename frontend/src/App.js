@@ -8,9 +8,14 @@ import QRcode from "./pages/QRcode";
 import ProfilePage from "./pages/ProfilePage";
 import EditProfilePage from "./pages/EditProfilePage";
 import TopUpPage from "./pages/TopUpPage";
+import CheckOutPage from "./pages/CheckOutPage";
+
 
 import { UserProvider } from "./UserContext";
 import { AuthProvider } from "./AuthContext";
+import HoldPage from "./pages/HoldPage";
+import BookFinePage from "./pages/BookFinePage";
+import TransactionHistoryPage from "./pages/TransactionHistoryPage";
 
 
 export default function App() {
@@ -29,6 +34,11 @@ export default function App() {
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/editprofile" element={<EditProfilePage />} /> 
               <Route path="/topup" element={<TopUpPage />} /> 
+              <Route path="/checkOut" element={<CheckOutPage />} /> 
+              <Route path="/hold" element={<HoldPage />} /> 
+              <Route path="/bookFine" element={<BookFinePage />} /> 
+              <Route path="/transactionHistory" element={<TransactionHistoryPage />} /> 
+
             </Routes>
           </div>
         </UserProvider>

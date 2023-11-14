@@ -91,7 +91,7 @@ export default function NavBarAndDrawer() {
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
-              <ListItemButton>
+              <ListItemButton component={Link} to="/profile">
                 <ListItemIcon>
                   <AccountCircleIcon />
                 </ListItemIcon>
