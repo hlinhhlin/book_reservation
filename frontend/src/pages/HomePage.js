@@ -12,7 +12,7 @@ function HomePage() {
   };
   useEffect(() => {
     // Fetch genres when the component mounts
-    fetch("http://localhost:5000/genres")
+    fetch("http://localhost:5050/genres")
       .then((response) => response.json())
       .then((data) => {
         setGenres(data.genre); // Update the state with the fetched genres
