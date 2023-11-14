@@ -21,7 +21,7 @@ export default function LogIn() {
     const data = new FormData(event.currentTarget);
 
     try {
-      const response = await fetch("http://localhost:5000/authenticateUser", {
+      const response = await fetch("http://localhost:5050/authenticateUser", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

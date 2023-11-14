@@ -51,7 +51,7 @@ export default function SignUp() {
         }
 
         try {
-          const response = await fetch("http://localhost:5000/addUser", {
+          const response = await fetch("http://localhost:5050/addUser", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
