@@ -119,13 +119,11 @@ router.get("/book/:id", (req, res) => {
 
 router.get('/books/latest', (req, res) => {
   const query = 'SELECT * FROM book ORDER BY Book_ID DESC LIMIT 6';
-
   db.query(query, (err, results) => {
     if (err) {
       res.status(500).json({ error: err.message });
       return;
     }
-
     res.json({ books: results });
   });
 });
