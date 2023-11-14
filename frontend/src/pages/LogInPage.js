@@ -7,6 +7,8 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import Alert from "@mui/material/Alert";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../UserContext";
 import { useAuth } from "../AuthContext";
@@ -15,6 +17,7 @@ export default function LogIn() {
   const navigate = useNavigate();
   const { loginUser } = useUser();
   const { isAuthenticated, login, logout } = useAuth();
+  const [error, setError] = useState(null);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -40,9 +43,9 @@ export default function LogIn() {
       loginUser(authenticatedUser);
       login();
       navigate("/");
-
     } catch (error) {
       console.error("Error:", error);
+      setError("Incorrect username or password");
     }
   };
 
@@ -60,6 +63,7 @@ export default function LogIn() {
           alignItems: "center",
         }}
       >
+        {error && <Alert severity="error">{error}</Alert>}
         <Typography
           variant="h4"
           component="div"
