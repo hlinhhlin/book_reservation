@@ -117,9 +117,24 @@ router.get("/book/:id", (req, res) => {
   });
 });
 
+router.get('/books/latest', (req, res) => {
+  const query = 'SELECT * FROM book ORDER BY Book_ID DESC LIMIT 6';
+
+  db.query(query, (err, results) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+
+    res.json({ books: results });
+  });
+});
+
+
+// router.post('/addUser', (req, res) => {
+//   const { firstname, lastname, tel, email, no, soi, street, subdistrict, district, province, zipcode, username, password } = req.body;
 // router.get('/book/:id', (req, res) => {
 //   const bookId = req.params.id; // Extract the book ID from the URL parameter
-
 //   const query = `
 //     SELECT
 //       book.*,
@@ -158,23 +173,100 @@ router.get("/book/:id", (req, res) => {
 //   });
 // });
 
+
+//Author
+router.get("/author/:id", (req, res) => {
+  const authorId = req.params.id; // Extract the book ID from the URL parameter
+
+  const query = `SELECT * FROM author WHERE Author_ID = ?`; // Use a prepared statement
+
+  db.query(query, [authorId], (err, results) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+
+    if (results.length === 0) {
+      res.status(404).json({ error: "Author not found" });
+    } else {
+      res.json({ author: results[0] }); // Assuming the query returns one book
+    }
+  });
+});
+
+//Publisher
+router.get("/publisher/:id", (req, res) => {
+  const publisherId = req.params.id; // Extract the book ID from the URL parameter
+
+  const query = `SELECT * FROM publisher WHERE Publisher_ID = ?`; // Use a prepared statement
+
+  db.query(query, [publisherId], (err, results) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+
+    if (results.length === 0) {
+      res.status(404).json({ error: "Publisher not found" });
+    } else {
+      res.json({ publisher: results[0] }); // Assuming the query returns one book
+    }
+  });
+});
+
+router.get("/cat-by-author/:id", (req, res) => {
+  const authorId = req.params.id; // Extract the book ID from the URL parameter
+  const query = `SELECT * FROM book WHERE Author_ID = ?`; // Use a prepared statement
+  db.query(query, [authorId], (err, results) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    if (results.length === 0) {
+      res.status(404).json({ error: "Book written by this author not found" });
+    } else {
+      res.json({ books: results[0] }); // Assuming the query returns one book
+    }
+  });
+});
+
+router.get("/cat-by-publisher/:id", (req, res) => {
+  const publisherId = req.params.id; // Extract the book ID from the URL parameter
+  const query = `SELECT * FROM book WHERE Publisher_ID = ?`; // Use a prepared statement
+  db.query(query, [publisherId], (err, results) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    if (results.length === 0) {
+      res.status(404).json({ error: "Book published by this publisher not found" });
+    } else {
+      res.json({ books: results[0] }); // Assuming the query returns one book
+    }
+  });
+});
+
+
+// router.get("/user/transaction/:id", (req,res) => {
+//   const userId = req.params.id;
+//   const query = `SELECT * from transaction WHERE User_ID = ?`;
+//   db.query(query, [userId], (err,results) => {
+//     if (err) {
+//       res.status(500).json({ error: err.message });
+//       return;
+//     }
+//     if (results.length === 0) {
+//       res.status(404).json({ error: "User is not found" });
+//     } else {
+//       res.json(results[0]); // Assuming the query returns one book
+//     }
+//   })
+// })
+
 //SignUpUser
 router.post("/addUser", (req, res) => {
-  const {
-    firstname,
-    lastname,
-    tel,
-    email,
-    no,
-    soi,
-    street,
-    subdistrict,
-    district,
-    province,
-    zipcode,
-    username,
-    password,
-  } = req.body;
+  const {firstname, lastname, tel, email, no, soi, street, subdistrict, district, province, zipcode,
+    username, password,} = req.body;
 
   const sql =
     "INSERT INTO User (FirstName, LastName, TelNumber, Email, Add_No, Add_Soi, Add_Street, Add_Subdistrict, Add_District, Add_Province, Add_ZipCode, Username, Password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -257,44 +349,199 @@ router.post("/authenticateUser", async (req, res) => {
   }
 });
 
-//Author
-router.get("/author/:id", (req, res) => {
-  const authorId = req.params.id; // Extract the book ID from the URL parameter
-
-  const query = `SELECT * FROM author WHERE Author_ID = ?`; // Use a prepared statement
-
-  db.query(query, [authorId], (err, results) => {
+router.get("/user/profile/:id", (req,res) => {
+  const userId = req.params.id;
+  const query = `SELECT * from user WHERE User_ID = ?`;
+  db.query(query, [userId], (err,results) => {
     if (err) {
       res.status(500).json({ error: err.message });
       return;
     }
-
     if (results.length === 0) {
-      res.status(404).json({ error: "Author not found" });
+      res.status(404).json({ error: "User is not found" });
     } else {
-      res.json({ author: results[0] }); // Assuming the query returns one book
+      res.json(results[0]); // Assuming the query returns one book
     }
+  })
+})
+
+router.post("/user/reserve", (req, res) => {
+  const { userId, bookId } = req.body;
+  const today = new Date();
+  const receivedDueDate = new Date(today);
+  receivedDueDate.setDate(today.getDate() + 7);
+
+  const reserveSql =
+    "INSERT INTO booking (User_ID, Book_ID, BookingDate, ReceiveDueDate) VALUES (?, ?, ?, ?)";
+
+  // Transaction to ensure both INSERT and UPDATE queries are executed or none
+  db.beginTransaction((err) => { 
+    if (err) {
+      console.error(err);
+      res.status(500).json({ error: "Error beginning transaction" });
+      return;
+    }
+    // Insert into booking table
+    db.query(
+      reserveSql,
+      [userId, bookId, today, receivedDueDate.toISOString().slice(0, 19).replace("T", " ")],
+      (err, result) => {
+        if (err) {
+          console.error(err);
+          db.rollback(() => {
+            res.status(500).json({ error: "Error inserting data into the database" });
+          });
+          return;
+        }
+
+        const insertedBookingId = result.insertId;
+
+        // Update book status to 1
+        const updateBookSql = "UPDATE book SET Status = 1 WHERE Book_ID = ?";
+        db.query(updateBookSql, [bookId], (err) => {
+          if (err) {
+            console.error(err);
+            db.rollback(() => {
+              res.status(500).json({ error: "Error updating book status" });
+            });
+            return;
+          }
+
+          // Commit the transaction
+          db.commit((err) => {
+            if (err) {
+              console.error(err);
+              db.rollback(() => {
+                res.status(500).json({ error: "Error committing transaction" });
+              });
+              return;
+            }
+            res.json({ id: insertedBookingId });
+          });
+        });
+      }
+    );
   });
 });
 
-//Publisher
-router.get("/publisher/:id", (req, res) => {
-  const publisherId = req.params.id; // Extract the book ID from the URL parameter
+//Cancel the reservation
+router.post('/user/cancelReservation', (req, res) => {
+  const { bookingId } = req.body;
 
-  const query = `SELECT * FROM publisher WHERE Publisher_ID = ?`; // Use a prepared statement
+  // Transaction to ensure both DELETE and UPDATE queries are executed or none
+  db.beginTransaction((err) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Error beginning transaction' });
+      return;
+    }
 
-  db.query(query, [publisherId], (err, results) => {
+    // Get the book ID before deleting the booking record
+    const getBookIdSql = 'SELECT Book_ID FROM booking WHERE Booking_ID = ?';
+    db.query(getBookIdSql, [bookingId], (err, results) => {
+      if (err) {
+        console.error(err);
+        db.rollback(() => {
+          res.status(500).json({ error: 'Error retrieving book ID' });
+        });
+        return;
+      }
+
+      if (results.length === 0) {
+        db.rollback(() => {
+          res.status(404).json({ error: 'Booking not found' });
+        });
+        return;
+      }
+
+      const bookId = results[0].Book_ID;
+
+      // Delete the booking record
+      const deleteBookingSql = 'DELETE FROM booking WHERE Booking_ID = ?';
+      db.query(deleteBookingSql, [bookingId], (err) => {
+        if (err) {
+          console.error(err);
+          db.rollback(() => {
+            res.status(500).json({ error: 'Error canceling reservation' });
+          });
+          return;
+        }
+
+        // Update book status to 0 (available)
+        const updateBookSql = 'UPDATE book SET Status = 0 WHERE Book_ID = ?';
+        db.query(updateBookSql, [bookId], (err) => {
+          if (err) {
+            console.error(err);
+            db.rollback(() => {
+              res.status(500).json({ error: 'Error updating book status' });
+            });
+            return;
+          }
+
+          // Commit the transaction
+          db.commit((err) => {
+            if (err) {
+              console.error(err);
+              db.rollback(() => {
+                res.status(500).json({ error: 'Error committing transaction' });
+              });
+              return;
+            }
+
+            res.json({ message: 'Reservation canceled successfully' });
+          });
+        });
+      });
+    });
+  });
+});
+
+
+//haven't check yet
+router.get("/user/checkout/:id", (req,res) => {
+  const userId = req.params.id;
+  const query = `SELECT book.Title, author.PenName, borrowing.BorrowDate, borrowing.ReturnDate,
+  COUNT(book.Book_ID) AS NumberOfBooksBorrowed
+  FROM user 
+  INNER JOIN borrowing ON borrowing.User_ID = user.User_ID
+  INNER JOIN book ON borrowing.Book_ID = book.Book_ID
+  INNER JOIN author ON author.Author_ID = book.Author_ID
+  WHERE User_ID = ?
+  GROUP BY book.Title, author.PenName, borrowing.BorrowDate, borrowing.ReturnDate;
+  `;
+  db.query(query, [userId], (err,results) => {
     if (err) {
       res.status(500).json({ error: err.message });
       return;
     }
-
     if (results.length === 0) {
-      res.status(404).json({ error: "Publisher not found" });
+      res.status(404).json({ error: "User is not found" });
     } else {
-      res.json({ publisher: results[0] }); // Assuming the query returns one book
+      res.json({books: results, count: results.length}); // Assuming the query returns one book
     }
-  });
-});
+  })
+})
+
+router.get("/user/hold/:id", (req,res) => {
+  const userId = req.params.id;
+  const query = `SELECT book.Title, author.PenName, booking.BookingDate, booking.ReceiveDueDate
+  FROM user 
+  JOIN booking ON booking.User_ID = user.User_ID
+  JOIN book ON booking.Book_ID = book.Book_ID
+  JOIN author ON author.Author_ID = book.Author_ID
+  WHERE user.User_ID = ?;
+  `;
+  db.query(query, [userId], (err,results) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    if (results.length === 0) {
+      res.status(404).json({ error: "User is not found" });
+    } else {
+      res.json({books: results, count: results.length}); // Assuming the query returns one book
+    }
+  })
+})
 
 module.exports = router;
