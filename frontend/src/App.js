@@ -9,7 +9,6 @@ import ProfilePage from "./pages/ProfilePage";
 import EditProfilePage from "./pages/EditProfilePage";
 import TopUpPage from "./pages/TopUpPage";
 
-
 import { UserProvider } from "./UserContext";
 import { AuthProvider } from "./AuthContext";
 

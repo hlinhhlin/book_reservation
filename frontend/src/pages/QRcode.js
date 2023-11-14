@@ -14,10 +14,11 @@ const QRcode = () => {
         <QRCode value={`${user.id}-${user.firstname}-${user.lastname}`} />
         {/*<img src="qrcode.jpg" alt="qrcode" style={{ width: '350px', marginBottom: '30px' }} />*/}
         <div>
-          <Typography variant="body1" style={{ fontSize: "20px" }}>
+          <Typography variant="body1" style={{ fontSize: "20px", 
+        marginTop: '20px' }}>
             Scan to identify your user
           </Typography>
-          <Typography variant="body1" style={{ fontSize: "20px" }}>
+          <Typography variant="body1" style={{ fontSize: "20px", fontWeight: 'bolder' }}>
             {user.firstname + " " + user.lastname}
           </Typography>
         </div>
