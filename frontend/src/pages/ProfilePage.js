@@ -26,7 +26,7 @@ const ProfilePage = () => {
             <IconButton onClick={handleEditClick}> <EditIcon/> </IconButton>
             </div>
             <div style={{ display: "flex", marginTop: "60px" }}>
-                <Button onClick={handleTopUpClick} variant="contained" color="primary" style={{ width: "210px", height: "80px", marginRight: "40px", textTransform: "none", fontSize: '20px' }}>
+                <Button onClick={handleTopUpClick} variant="contained" color="primary" style={{ width: "210px", height: "80px", marginRight: "40px", textTransform: "none", fontSize: '20px', fontWeight: 'bolder' }}>
                     + Topup eMoney
                 </Button>
                 <Typography style={{ width: "210px", height: "80px", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid #ccc", borderRadius: '5px', fontSize: '20px' }}>

@@ -6,7 +6,7 @@ const SearchPage = () => {
   return (
     <Box>
       <TextField id="outlined-basic" label="Search in library" variant="outlined" style={{ marginTop: '20px', marginLeft: '20px', width: '500px' }} />
-      <Typography variant="h6" style={{ margin: '20px', fontWeight: 'bolder', fontSize: '20px' }}>Newest</Typography>
+      <Typography variant="h6" style={{ margin: '20px', fontWeight: 'bolder', fontSize: '20px' }}>New Arrival</Typography>
       <Grid container spacing={2}>
         <Grid item xs={4}>
           <Paper elevation={3} className="paperStyle" style={{ boxShadow: 'none' }}>

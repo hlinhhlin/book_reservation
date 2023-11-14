@@ -44,7 +44,7 @@ const TopUpPage = () => {
             </Button>
         </div>
         <div style={{ display: "flex", marginLeft: "245px", marginBottom: "100px" }}>
-                <Button variant="contained" color="primary" style={{ width: "150px", height: "55px", marginRight: "40px", textTransform: "none", fontSize: '20px' }}>
+                <Button variant="contained" style={{ width: "150px", height: "55px", marginRight: "40px", textTransform: "none", fontSize: '20px', color: 'black', backgroundColor: 'white' }}>
                     Cancel
                 </Button>
                 <Button variant="contained" color="primary" style={{ width: "150px", height: "55px", marginRight: "40px", textTransform: "none", fontSize: '20px' }}>

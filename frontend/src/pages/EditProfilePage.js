@@ -33,7 +33,7 @@ const EditProfilePage = () => {
         <Typography style={{fontSize: '20px', marginRight: "70px"}}>Address</Typography>
         <TextField id="outlined-basic" label="Address" variant="outlined" style={{ width: '500px' }}/>
     </div>
-    <Button variant="contained" color="primary" style={{ width: "200px", height: "50px", marginTop: '50px', textTransform: "none", fontSize: '15px' }}>
+    <Button variant="contained" color="primary" style={{ width: "200px", height: "50px", marginTop: '50px', textTransform: "none", fontSize: '20px' }}>
         Submit
     </Button>
     </div>
