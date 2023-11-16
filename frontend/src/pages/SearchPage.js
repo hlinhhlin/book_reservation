@@ -5,7 +5,7 @@ const SearchPage = () => {
   const [bookLatest, setBookLatest] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5050/books/latest")
+    fetch("http://localhost:5050/user/books/latest")
       .then((response) => response.json())
       .then((data) => {
         console.log(data.books);

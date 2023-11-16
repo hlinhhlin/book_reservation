@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const db = require("./db"); // Import the 'db' connection module
+const db = require("../db"); // Import the 'db' connection module
 
 // router.get(`/books/all`, (req, res) => {
 //   const query = "SELECT * FROM book"; // Adjust the query based on your database schema
@@ -245,21 +245,21 @@ router.get("/cat-by-publisher/:id", (req, res) => {
 });
 
 
-// router.get("/user/transaction/:id", (req,res) => {
-//   const userId = req.params.id;
-//   const query = `SELECT * from transaction WHERE User_ID = ?`;
-//   db.query(query, [userId], (err,results) => {
-//     if (err) {
-//       res.status(500).json({ error: err.message });
-//       return;
-//     }
-//     if (results.length === 0) {
-//       res.status(404).json({ error: "User is not found" });
-//     } else {
-//       res.json(results[0]); // Assuming the query returns one book
-//     }
-//   })
-// })
+router.get("/transaction/:id", (req,res) => {
+  const userId = req.params.id;
+  const query = `SELECT * from transaction WHERE User_ID = ?`;
+  db.query(query, [userId], (err,results) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    if (results.length === 0) {
+      res.status(404).json({ error: "User is not found" });
+    } else {
+      res.json(results); // Assuming the query returns one book
+    }
+  })
+})
 
 //SignUpUser
 router.post("/addUser", (req, res) => {
@@ -347,7 +347,7 @@ router.post("/authenticateUser", async (req, res) => {
   }
 });
 
-router.get("/user/profile/:id", (req,res) => {
+router.get("/profile/:id", (req,res) => {
   const userId = req.params.id;
   const query = `SELECT * from user WHERE User_ID = ?`;
   db.query(query, [userId], (err,results) => {
@@ -419,166 +419,6 @@ router.post("/book/reserve", (req, res) => {
         });
       }
     );
-  });
-});
-
-router.post("/book/borrow", (req, res) => {
-  const { bookingId } = req.body;
-  const today = new Date();
-
-  // Transaction to ensure both INSERT and UPDATE queries are executed or none
-  db.beginTransaction((err) => {
-    if (err) {
-      console.error(err);
-      res.status(500).json({ error: "Error beginning transaction" });
-      return;
-    }
-
-    // Get User_ID and Book_ID from the booking record
-    const getBookingDetailsSql = 'SELECT User_ID, Book_ID FROM booking WHERE Booking_ID = ?';
-    db.query(getBookingDetailsSql, [bookingId], (err, results) => {
-      if (err) {
-        console.error(err);
-        db.rollback(() => {
-          res.status(500).json({ error: 'Error retrieving booking details' });
-        });
-        return;
-      }
-
-      if (results.length === 0) {
-        db.rollback(() => {
-          res.status(404).json({ error: 'Booking not found' });
-        });
-        return;
-      }
-
-      const userId = results[0].User_ID;
-      const bookId = results[0].Book_ID;
-
-      // Insert into borrowing table
-      const bookSql =
-        "INSERT INTO borrowing (User_ID, Book_ID, BorrowDate, ReturnDate, Status) VALUES (?, ?, ?, ?, 'borrowed')";
-
-      db.query(
-        bookSql,
-        [userId, bookId, new Date(), new Date(today.getDate() + 14).toISOString().slice(0, 19).replace("T", " ")],
-        (err, result) => {
-          if (err) {
-            console.error(err);
-            db.rollback(() => {
-              res.status(500).json({ error: "Error inserting data into the database" });
-            });
-            return;
-          }
-
-          const insertedBookingId = result.insertId;
-
-          // Update booking status to 'borrowed'
-          const updateBookingSql = 'UPDATE booking SET Status = "borrowed" WHERE Booking_ID = ?';
-          db.query(updateBookingSql, [bookingId], (err) => {
-            if (err) {
-              console.error(err);
-              db.rollback(() => {
-                res.status(500).json({ error: 'Error updating booking status' });
-              });
-              return;
-            }
-
-            // Commit the transaction
-            db.commit((err) => {
-              if (err) {
-                console.error(err);
-                db.rollback(() => {
-                  res.status(500).json({ error: "Error committing transaction" });
-                });
-                return;
-              }
-              res.json({ id: insertedBookingId });
-            });
-          });
-        }
-      );
-    });
-  });
-});
-
-
-router.post("/book/return", (req, res) => {
-  const { borrowedId } = req.body;
-
-  // Transaction to ensure both UPDATE and other queries are executed or none
-  db.beginTransaction((err) => {
-    if (err) {
-      console.error(err);
-      res.status(500).json({ error: 'Error beginning transaction' });
-      return;
-    }
-
-    // Update the Status in the borrowing table
-    const updateReturnStatusSql = 'UPDATE borrowing SET Status = "returned" WHERE Borrow_ID = ?';
-    db.query(updateReturnStatusSql, [borrowedId], (err, result) => {
-      if (err) {
-        console.error(err);
-        db.rollback(() => {
-          res.status(500).json({ error: 'Error updating Status in the database' });
-        });
-        return;
-      }
-
-      // Check if any rows were affected (book was returned)
-      if (result.affectedRows === 0) {
-        db.rollback(() => {
-          res.status(404).json({ error: 'Borrowing record not found or not borrowed' });
-        });
-        return;
-      }
-
-      // Get the book ID for further updates
-      const getBookIdSql = 'SELECT Book_ID FROM borrowing WHERE Borrow_ID = ?';
-      db.query(getBookIdSql, [borrowedId], (err, results) => {
-        if (err) {
-          console.error(err);
-          db.rollback(() => {
-            res.status(500).json({ error: 'Error retrieving book ID' });
-          });
-          return;
-        }
-
-        if (results.length === 0) {
-          db.rollback(() => {
-            res.status(404).json({ error: 'Borrowing record not found' });
-          });
-          return;
-        }
-
-        const bookId = results[0].Book_ID;
-
-        // Update book status to 0 (available)
-        const updateBookStatusSql = 'UPDATE book SET Status = 0 WHERE Book_ID = ?';
-        db.query(updateBookStatusSql, [bookId], (err) => {
-          if (err) {
-            console.error(err);
-            db.rollback(() => {
-              res.status(500).json({ error: 'Error updating book status' });
-            });
-            return;
-          }
-
-          // Commit the transaction
-          db.commit((err) => {
-            if (err) {
-              console.error(err);
-              db.rollback(() => {
-                res.status(500).json({ error: 'Error committing transaction' });
-              });
-              return;
-            }
-
-            res.json({ message: 'Book returned successfully' });
-          });
-        });
-      });
-    });
   });
 });
 
@@ -658,7 +498,7 @@ router.post('/book/cancelReservation', (req, res) => {
 
 
 //haven't check yet
-router.get("/user/checkout/:id", (req,res) => {
+router.get("/checkout/:id", (req,res) => {
   const userId = req.params.id;
   const query = `SELECT book.Title, author.PenName, borrowing.BorrowDate, borrowing.ReturnDate,
   COUNT(book.Book_ID) AS NumberOfBooksBorrowed
@@ -682,7 +522,7 @@ router.get("/user/checkout/:id", (req,res) => {
   })
 })
 
-router.get("/user/hold/:id", (req,res) => {
+router.get("/hold/:id", (req,res) => {
   const userId = req.params.id;
   const query = `SELECT book.Title, author.PenName, booking.BookingDate, booking.ReceiveDueDate
   FROM user 
@@ -697,11 +537,37 @@ router.get("/user/hold/:id", (req,res) => {
       return;
     }
     if (results.length === 0) {
-      res.status(404).json({ error: "User is not found" });
+      res.status(404).json({ error: "Booking is not found" });
     } else {
       res.json({books: results, count: results.length}); // Assuming the query returns one book
     }
   })
 })
+
+//TopUp
+router.post("/transaction/topup", (req, res) => {
+  const {userId, amount} = req.body;
+  const today = new Date();
+  const sql =
+    "INSERT INTO Transaction (User_ID, TransactionDate, Status, Amount, Type) VALUES (?, ?, ?, ?, ?)";
+  db.query(
+    sql,
+    [userId, today, 'pending', amount, 'top-up'],
+    (err, result) => {
+      if (err) {
+        console.error(err);
+        res
+          .status(500)
+          .json({ error: "Error inserting data into the database" });
+      } else {
+        const transactionID = result.insertId; // Retrieve the last inserted ID
+        res.json({ id: transactionID });
+      }
+    }
+  );
+});
+
+
+
 
 module.exports = router;

@@ -2,15 +2,16 @@ const express = require('express');
 var cors = require('cors');
 const app = express();
 
+const userapi = require('./api/userapi');
+const adminapi = require('./api/adminapi');
+
 app.use(cors()); //Enable CORS
 
 app.use(express.json());
 
-// Import your API router from './api'
-const apiRouter = require('./api');
-
 // Mount the apiRouter for the root route
-app.use('/', apiRouter);
+app.use('/user', userapi);
+app.use('/admin', adminapi);
 
 // Start the server
 const port = process.env.PORT || 5050;
