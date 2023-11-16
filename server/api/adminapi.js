@@ -336,8 +336,4 @@ router.post("/transaction/fine/updateAmount", (req, res) => {
     });
 });
 
-
-
-  
-
 module.exports = router;

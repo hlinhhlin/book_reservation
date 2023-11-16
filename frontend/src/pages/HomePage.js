@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "../style.css";
 import { useUser } from "../UserContext";
-import { Divider } from "@mui/material";
 
 function HomePage() {
   const [genres, setGenres] = useState([]);
   const { loginUser } = useUser();
 
   const handleClickGenre = () => {
-
   };
   useEffect(() => {
     // Fetch genres when the component mounts

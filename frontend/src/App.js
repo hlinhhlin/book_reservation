@@ -38,7 +38,6 @@ export default function App() {
               <Route path="/hold" element={<HoldPage />} /> 
               <Route path="/bookFine" element={<BookFinePage />} /> 
               <Route path="/transactionHistory" element={<TransactionHistoryPage />} /> 
-
             </Routes>
           </div>
         </UserProvider>

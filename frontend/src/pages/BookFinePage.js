@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 
 
 const BookFinePage = () => {
-
+    
     return (
         <Box>
         <div className="img-left-format" style={{display: "flex"}}>

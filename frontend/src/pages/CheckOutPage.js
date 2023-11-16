@@ -5,8 +5,6 @@ import { Box } from "@mui/material";
 function CheckOutPage() {
     const [bookData, setBookData] = useState([]);
 
-   
-
     return (
         <Box>
         <div className="img-left-format" style={{display: "flex"}}>

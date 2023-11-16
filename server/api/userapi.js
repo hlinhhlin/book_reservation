@@ -500,8 +500,7 @@ router.post('/book/cancelReservation', (req, res) => {
 //haven't check yet
 router.get("/checkout/:id", (req,res) => {
   const userId = req.params.id;
-  const query = `SELECT book.Title, author.PenName, borrowing.BorrowDate, borrowing.ReturnDate,
-  COUNT(book.Book_ID) AS NumberOfBooksBorrowed
+  const query = `SELECT book.Title, author.PenName, borrowing.BorrowDate, borrowing.ReturnDate
   FROM user 
   INNER JOIN borrowing ON borrowing.User_ID = user.User_ID
   INNER JOIN book ON borrowing.Book_ID = book.Book_ID

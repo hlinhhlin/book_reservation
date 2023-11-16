@@ -3,7 +3,6 @@ import "../style.css";
 import { Typography, TextField, Button, IconButton} from '@mui/material';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 
-
 const EditProfilePage = () => {
 
   return (
