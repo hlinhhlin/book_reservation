@@ -496,17 +496,15 @@ router.post('/book/cancelReservation', (req, res) => {
   });
 });
 
-
-//haven't check yet
 router.get("/checkout/:id", (req,res) => {
   const userId = req.params.id;
-  const query = `SELECT book.Title, author.PenName, borrowing.BorrowDate, borrowing.ReturnDate
+  const query = `SELECT book.Title, book.BookImage, author.PenName, borrowing.BorrowDate, borrowing.ReturnDate
   FROM user 
   INNER JOIN borrowing ON borrowing.User_ID = user.User_ID
   INNER JOIN book ON borrowing.Book_ID = book.Book_ID
   INNER JOIN author ON author.Author_ID = book.Author_ID
   WHERE user.User_ID = ? AND borrowing.Status = 'borrowed'
-  GROUP BY book.Title, author.PenName, borrowing.BorrowDate, borrowing.ReturnDate;
+  GROUP BY book.Title, book.BookImage, author.PenName, borrowing.BorrowDate, borrowing.ReturnDate;
   `;
   db.query(query, [userId], (err,results) => {
     if (err) {
@@ -565,8 +563,5 @@ router.post("/transaction/topup", (req, res) => {
     }
   );
 });
-
-
-
 
 module.exports = router;

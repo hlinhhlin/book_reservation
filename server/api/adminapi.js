@@ -40,16 +40,18 @@ router.post("/book/borrow", (req, res) => {
       const bookSql =
         "INSERT INTO borrowing (User_ID, Book_ID, BorrowDate, ReturnDate, Status) VALUES (?, ?, ?, ?, 'borrowed')";
 
+      const returnDate = new Date();
+      returnDate.setDate(today.getDate() + 14);
+
+      const formattedReturnDate = returnDate.toISOString().slice(0, 19).replace("T", " ");
+
       db.query(
         bookSql,
         [
           userId,
           bookId,
-          new Date(),
-          new Date(today.getDate() + 14)
-            .toISOString()
-            .slice(0, 19)
-            .replace("T", " "),
+          today.toISOString().slice(0, 19).replace("T", " "), // Use today's date for BorrowDate
+          formattedReturnDate, // Use the calculated return date for ReturnDate
         ],
         (err, result) => {
           if (err) {
@@ -294,46 +296,46 @@ router.post("/transaction/fine", (req, res) => {
 });
 
 router.post("/transaction/fine/updateAmount", (req, res) => {
-    const { transactionId, newAmount } = req.body;
+  const { transactionId, newAmount } = req.body;
 
-    // Check if the transaction exists
-    const checkTransactionSql =
-        "SELECT * FROM Transaction WHERE Transaction_ID = ? AND Type = 'fine'";
-    db.query(checkTransactionSql, [transactionId], (checkErr, checkResult) => {
-        if (checkErr) {
-            console.error(checkErr);
-            return res.status(500).json({ error: "Error checking transaction" });
+  // Check if the transaction exists
+  const checkTransactionSql =
+    "SELECT * FROM Transaction WHERE Transaction_ID = ? AND Type = 'fine'";
+  db.query(checkTransactionSql, [transactionId], (checkErr, checkResult) => {
+    if (checkErr) {
+      console.error(checkErr);
+      return res.status(500).json({ error: "Error checking transaction" });
+    }
+
+    if (checkResult.length === 0) {
+      return res.status(404).json({ error: "Transaction not found" });
+    }
+
+    // Update the amount if the transaction exists
+    const updateAmountSql =
+      "UPDATE Transaction SET Amount = ? WHERE Transaction_ID = ?";
+    db.query(
+      updateAmountSql,
+      [newAmount, transactionId],
+      (updateErr, updateResult) => {
+        if (updateErr) {
+          console.error(updateErr);
+          return res
+            .status(500)
+            .json({ error: "Error updating amount in the database" });
         }
 
-        if (checkResult.length === 0) {
-            return res.status(404).json({ error: "Transaction not found" });
+        // Check if the update was successful
+        if (updateResult.affectedRows === 0) {
+          return res
+            .status(500)
+            .json({ error: "Error updating amount. No rows affected." });
         }
 
-        // Update the amount if the transaction exists
-        const updateAmountSql =
-            "UPDATE Transaction SET Amount = ? WHERE Transaction_ID = ?";
-        db.query(
-            updateAmountSql,
-            [newAmount, transactionId],
-            (updateErr, updateResult) => {
-                if (updateErr) {
-                    console.error(updateErr);
-                    return res
-                        .status(500)
-                        .json({ error: "Error updating amount in the database" });
-                }
-
-                // Check if the update was successful
-                if (updateResult.affectedRows === 0) {
-                    return res
-                        .status(500)
-                        .json({ error: "Error updating amount. No rows affected." });
-                }
-
-                res.json({ message: "Amount updated successfully" });
-            }
-        );
-    });
+        res.json({ message: "Amount updated successfully" });
+      }
+    );
+  });
 });
 
 module.exports = router;

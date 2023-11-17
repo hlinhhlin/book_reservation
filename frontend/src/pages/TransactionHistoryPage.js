@@ -1,13 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box } from "@mui/material";
 import { useUser } from "../UserContext";
-
-const formatDate = (dateString) => {
-  const originalDate = new Date(dateString);
-  return `${originalDate.getDate()}-${(originalDate.getMonth() + 1)
-    .toString()
-    .padStart(2, "0")}-${originalDate.getFullYear()}`;
-};
+import { FormatDate } from "../Config";
 
 const TransactionHistoryPage = () => {
   const { user } = useUser();
@@ -38,7 +32,7 @@ const TransactionHistoryPage = () => {
                 lineHeight: "1.5",
               }}
             >
-              <p>{formatDate(TransactionDate)}</p>
+              <p>{FormatDate(TransactionDate)}</p>
               <p style={{ color: "#444444" }}>Type: {Type}</p>
               <p style={{ color: "#444444" }}>Status: {Status}</p>
             </div>
