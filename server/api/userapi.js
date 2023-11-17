@@ -504,7 +504,6 @@ router.get("/checkout/:id", (req,res) => {
   INNER JOIN book ON borrowing.Book_ID = book.Book_ID
   INNER JOIN author ON author.Author_ID = book.Author_ID
   WHERE user.User_ID = ? AND borrowing.Status = 'borrowed'
-  GROUP BY book.Title, book.BookImage, author.PenName, borrowing.BorrowDate, borrowing.ReturnDate;
   `;
   db.query(query, [userId], (err,results) => {
     if (err) {
@@ -521,7 +520,7 @@ router.get("/checkout/:id", (req,res) => {
 
 router.get("/hold/:id", (req,res) => {
   const userId = req.params.id;
-  const query = `SELECT book.Title, author.PenName, booking.BookingDate, booking.ReceiveDueDate
+  const query = `SELECT book.Title, Book.BookImage, author.PenName, booking.BookingDate, booking.ReceiveDueDate
   FROM user 
   JOIN booking ON booking.User_ID = user.User_ID
   JOIN book ON booking.Book_ID = book.Book_ID

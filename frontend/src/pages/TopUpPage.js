@@ -4,10 +4,8 @@ import { Button, TextField, Typography } from '@mui/material';
 
 
 const TopUpPage = () => {
-
     const [pressed, setPressed] = useState(false);
-  
-
+    
     return (
       <div>
         <p style={{fontSize: '20px', fontWeight: 'bold', marginTop: '50px', marginBottom: '30px', marginLeft: '50px'}}>Topup eMoney</p>
