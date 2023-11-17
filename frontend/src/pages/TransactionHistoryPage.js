@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box } from "@mui/material";
 import { useUser } from "../UserContext";
-import { FormatDate } from "../Config";
+import { FormatDate, capitalizeFirstLetter } from "../Config";
 
 const TransactionHistoryPage = () => {
   const { user } = useUser();
@@ -20,9 +20,11 @@ const TransactionHistoryPage = () => {
   }, []);
 
   return (
-    <Box>
-    {transaction &&
-      transaction.map(({ TransactionDate, Status, Type, Amount }, index) => (
+<Box>
+  {transaction &&
+    transaction
+      .sort((a, b) => new Date(b.TransactionDate) - new Date(a.TransactionDate))
+      .map(({ TransactionDate, Status, Type, Amount }, index) => (
         <div key={TransactionDate}>
           <div style={{ display: "flex" }}>
             <div
@@ -33,8 +35,8 @@ const TransactionHistoryPage = () => {
               }}
             >
               <p>{FormatDate(TransactionDate)}</p>
-              <p style={{ color: "#444444" }}>Type: {Type}</p>
-              <p style={{ color: "#444444" }}>Status: {Status}</p>
+              <p style={{ color: "#444444" }}>Type: {capitalizeFirstLetter(Type)}</p>
+              <p style={{ color: "#444444" }}>Status: {capitalizeFirstLetter(Status)}</p>
             </div>
             <div>
               <h5
@@ -51,7 +53,8 @@ const TransactionHistoryPage = () => {
           {index < transaction.length - 1 && <hr />} {/* Add horizontal line if it's not the last transaction */}
         </div>
       ))}
-  </Box>
+</Box>
+
   
   );
 };

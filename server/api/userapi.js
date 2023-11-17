@@ -557,7 +557,7 @@ router.post("/transaction/topup", (req, res) => {
   const today = new Date();
   const sql =
     "INSERT INTO Transaction (User_ID, TransactionDate, Status, Amount, Type) VALUES (?, ?, ?, ?, ?)";
-  db.query(sql, [userId, today, "pending", amount, "top-up"], (err, result) => {
+  db.query(sql, [userId, today, "successful", amount, "top-up"], (err, result) => {
     if (err) {
       console.error(err);
       res.status(500).json({ error: "Error inserting data into the database" });

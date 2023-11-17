@@ -38,17 +38,28 @@ const ProfilePage = () => {
   };
 
   useEffect(() => {
-    // Fetch transactions when the component mounts
+    // Fetch transactions with 'successful' status when the component mounts
     fetch(`http://localhost:5050/user/transaction/${user.id}`)
       .then((response) => response.json())
       .then((data) => {
-        const sumAmount = data.reduce((total, item) => total + item.Amount, 0);
+        // Filter transactions with 'successful' status
+        const successfulTransactions = data.filter(
+          (transaction) => transaction.Status === 'successful'
+        );
+  
+        // Sum the Amount for 'successful' transactions
+        const sumAmount = successfulTransactions.reduce(
+          (total, item) => total + item.Amount,
+          0
+        );
+  
         setTotalAmount(sumAmount);
       })
       .catch((error) => {
         console.log("Error fetching transactions:", error);
       });
   }, []);
+  
 
   return (
     <div className="profile-container">
