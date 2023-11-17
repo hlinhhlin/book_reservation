@@ -352,7 +352,7 @@ router.post("/authenticateUser", async (req, res) => {
 
 router.get("/profile/:id", (req, res) => {
   const userId = req.params.id;
-  const query = `SELECT * from user WHERE User_ID = ?`;
+  const query = `SELECT User_ID, FirstName, LastName, TelNumber, Email, Address from user WHERE User_ID = ?`;
   db.query(query, [userId], (err, results) => {
     if (err) {
       res.status(500).json({ error: err.message });
@@ -606,7 +606,7 @@ router.get("/book/fine/:id", (req, res) => {
 
 router.post("/profile/update/:id", (req, res) => {
   const userId = req.params.id;
-  const { firstname, lastname, email, telephone, address } = req.body;
+  const { FirstName, LastName, Email, TelNumber, Address } = req.body;
 
   // Begin the transaction
   db.beginTransaction((err) => {
@@ -621,7 +621,7 @@ router.post("/profile/update/:id", (req, res) => {
       "UPDATE user SET FirstName = ?, LastName = ?, Email = ?, TelNumber = ?, Address = ? WHERE User_ID = ?";
     db.query(
       updateProfileSql,
-      [firstname, lastname, email, telephone, address, userId],
+      [FirstName, LastName, Email, TelNumber, Address, userId],
       (err, result) => {
         if (err) {
           console.error(err);
