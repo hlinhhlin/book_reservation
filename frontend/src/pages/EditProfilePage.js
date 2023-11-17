@@ -107,6 +107,7 @@ const EditProfilePage = () => {
             First Name
           </Typography>
           <TextField
+            disabled
             id="outlined-basic"
             label="First Name"
             variant="outlined"
