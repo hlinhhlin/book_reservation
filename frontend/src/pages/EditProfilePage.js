@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Typography, TextField, Button, IconButton } from "@mui/material";
-import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
+import { Typography, TextField, Button, IconButton, Box } from "@mui/material";
 import { useUser } from "../UserContext";
+import "../style.css";
 
 const EditProfilePage = () => {
   const { user } = useUser();
@@ -25,6 +25,26 @@ const EditProfilePage = () => {
         console.log("Error fetching transactions:", error);
       });
   }, [user.id]);
+
+  const handleFirstNameChange = (e) => {
+    setFirstName(e.target.value);
+  };
+
+  const handleLastNameChange = (e) => {
+    setLastName(e.target.value);
+  };
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handleTelNumberChange = (e) => {
+    setTelNumber(e.target.value);
+  };
+
+  const handleAddressChange = (e) => {
+    setAddress(e.target.value);
+  };
 
   const handleSubmit = () => {
     // Prepare the data for the update
@@ -56,103 +76,104 @@ const EditProfilePage = () => {
   };
 
   return (
-    <div className="profile-container">
+    <Box style={{ display: "flex" }}>
       <img src="user.png" alt="user" className="circle-frame" />
-      <IconButton
-        component="label"
-        style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(150%, -140%)",
-          backgroundColor: "#f5f5f5",
-          borderRadius: "50%",
-          padding: "8px",
-        }}
+      <div
+        className="profile-container"
+        style={{ marginLeft: "180px", marginTop: "50px" }}
       >
-        {/* <PhotoCameraIcon /> */}
-        <input type="file" accept="image/*" style={{ display: "none" }} />
-      </IconButton>
-      <div style={{ display: "flex", alignItems: "center", marginTop: "20px" }}>
-        <Typography style={{ fontSize: "20px", marginRight: "50px" }}>
-          First Name
-        </Typography>
-        <TextField
-          id="outlined-basic"
-          label="First Name"
-          variant="outlined"
-          value={firstName || ''}
-          onChange={(e) => setFirstName(e.target.value)}
-          style={{ width: "500px" }}
-        />
+        <div
+          style={{ display: "flex", alignItems: "center", marginTop: "20px" }}
+        >
+          <Typography style={{ fontSize: "20px", marginRight: "50px" }}>
+            First Name
+          </Typography>
+          <TextField
+            id="outlined-basic"
+            label="First Name"
+            variant="outlined"
+            style={{ width: "500px" }}
+            value={firstName}
+            onChange={handleFirstNameChange}
+          />
+        </div>
+        <div
+          style={{ display: "flex", alignItems: "center", marginTop: "20px" }}
+        >
+          <Typography style={{ fontSize: "20px", marginRight: "50px" }}>
+            Last Name
+          </Typography>
+          <TextField
+            id="outlined-basic"
+            label="Last Name"
+            variant="outlined"
+            style={{ width: "500px" }}
+            value={lastName}
+            onChange={handleLastNameChange}
+          />
+        </div>
+        <div
+          style={{ display: "flex", alignItems: "center", marginTop: "20px" }}
+        >
+          <Typography style={{ fontSize: "20px", marginRight: "90px" }}>
+            Email
+          </Typography>
+          <TextField
+            id="outlined-basic"
+            label="Email"
+            variant="outlined"
+            style={{ width: "500px" }}
+            value={email}
+            onChange={handleEmailChange}
+          />
+        </div>
+        <div
+          style={{ display: "flex", alignItems: "center", marginTop: "20px" }}
+        >
+          <Typography style={{ fontSize: "20px", marginRight: "49px" }}>
+            Telephone
+          </Typography>
+          <TextField
+            id="outlined-basic"
+            label="Telephone"
+            variant="outlined"
+            style={{ width: "500px" }}
+            value={telNumber}
+            onChange={handleTelNumberChange}
+          />
+        </div>
+        <div
+          style={{ display: "flex", alignItems: "center", marginTop: "20px" }}
+        >
+          <Typography style={{ fontSize: "20px", marginRight: "70px" }}>
+            Address
+          </Typography>
+          <TextField
+            id="outlined-basic"
+            label="Address"
+            variant="outlined"
+            style={{ width: "500px" }}
+            value={address}
+            onChange={handleAddressChange}
+          />
+        </div>
+        <Button
+          variant="contained"
+          color="primary"
+          style={{
+            width: "200px",
+            height: "50px",
+            marginTop: "50px",
+            marginLeft: "250px",
+            textTransform: "none",
+            fontSize: "20px",
+          }}
+          onClick={handleSubmit}
+        >
+          Submit
+        </Button>
       </div>
-      <div style={{ display: "flex", alignItems: "center", marginTop: "20px" }}>
-        <Typography style={{ fontSize: "20px", marginRight: "50px" }}>
-          Last Name
-        </Typography>
-        <TextField
-          id="outlined-basic"
-          label="Last Name"
-          variant="outlined"
-          value={lastName || ''}
-          onChange={(e) => setLastName(e.target.value)}
-          style={{ width: "500px" }}
-        />
-      </div>
-      <div style={{ display: "flex", alignItems: "center", marginTop: "20px" }}>
-        <Typography style={{ fontSize: "20px", marginRight: "90px" }}>
-          Email
-        </Typography>
-        <TextField
-          id="outlined-basic"
-          label="Email"
-          variant="outlined"
-          value={email || ''}
-          onChange={(e) => setEmail(e.target.value)}
-          style={{ width: "500px" }}
-        />
-      </div>
-      <div style={{ display: "flex", alignItems: "center", marginTop: "20px" }}>
-        <Typography style={{ fontSize: "20px", marginRight: "49px" }}>
-          Telephone
-        </Typography>
-        <TextField
-          id="outlined-basic"
-          label="Telephone"
-          variant="outlined"
-          value={telNumber || ''}
-          onChange={(e) => setTelNumber(e.target.value)}
-          style={{ width: "500px" }}
-        />
-      </div>
-      <div style={{ display: "flex", alignItems: "center", marginTop: "20px" }}>
-        <Typography style={{ fontSize: "20px", marginRight: "70px" }}>
-          Address
-        </Typography>
-        <TextField
-          id="outlined-basic"
-          label="Address"
-          variant="outlined"
-          value={address || ''}
-          onChange={(e) => setAddress(e.target.value)}
-          style={{ width: "500px" }}
-        />
-      </div>
-      <Button
-        variant="contained"
-        color="primary"
-        style={{
-          width: "200px",
-          height: "50px",
-          marginTop: "50px",
-          textTransform: "none",
-          fontSize: "20px",
-        }}
-        onClick={handleSubmit}
-      >
-        Submit
-      </Button>
-    </div>
+    </Box>
   );
 };
 
