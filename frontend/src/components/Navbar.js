@@ -127,8 +127,8 @@ export default function NavBarAndDrawer() {
             sx={{
               flexGrow: 1,
               fontSize: 28,
-              fontWeight: 3000,
-              letterSpacing: 3,
+              fontWeight: 1000,
+              letterSpacing: 2,
             }}
           >
             BookBelay

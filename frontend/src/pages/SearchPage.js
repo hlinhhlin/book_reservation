@@ -34,8 +34,8 @@ const SearchPage = () => {
         style={{ marginTop: "20px", marginLeft: "20px", width: "500px" }}
       />
       <Typography
-        variant="h6"
-        style={{ margin: "20px", fontWeight: "bolder", fontSize: "20px" }}
+        variant="h5"
+        style={{ margin: "20px", fontWeight: "1000"}}
       >
         New Arrival
       </Typography>
@@ -54,7 +54,7 @@ const SearchPage = () => {
                 )}`}
                 className="ImageStyle"
                 alt={Title} 
-                style={{ width: "auto", height: "300px", objectFit: "cover" }} //ไม่ใช้แล้วมันไม่ได้ TT
+                style={{ width: "auto", height: "300px", objectFit: "cover", borderRadius: 10 }} //ไม่ใช้แล้วมันไม่ได้ TT
               />
               <Typography
                 variant="subtitle1"

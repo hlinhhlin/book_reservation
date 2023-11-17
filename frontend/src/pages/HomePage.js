@@ -24,7 +24,7 @@ function HomePage() {
     <div className="book-grid">
       {genres.map(({ GenreName, GenreImage }) => (
         <div className="book-item" key={GenreName} onClick={handleClickGenre}>
-          <img src={`data:image/png;base64,${GenreImage}`} />
+          <img src={`data:image/png;base64,${GenreImage}`} style={{borderRadius: 10}}/>
           <p className="genre">{GenreName}</p>
         </div>
       ))}

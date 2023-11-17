@@ -278,25 +278,15 @@ router.post("/addUser", (req, res) => {
     password,
   } = req.body;
 
+  // Combine address fields into a single string
+  const address =
+    `${no} ${soi} ${street}, ${subdistrict}, ${district}, ${province} ${zipcode}`;
+
   const sql =
-    "INSERT INTO User (FirstName, LastName, TelNumber, Email, Add_No, Add_Soi, Add_Street, Add_Subdistrict, Add_District, Add_Province, Add_ZipCode, Username, Password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    "INSERT INTO User (FirstName, LastName, TelNumber, Email, Address, Username, Password) VALUES (?, ?, ?, ?, ?, ?, ?)";
   db.query(
     sql,
-    [
-      firstname,
-      lastname,
-      tel,
-      email,
-      no,
-      soi,
-      street,
-      subdistrict,
-      district,
-      province,
-      zipcode,
-      username,
-      password,
-    ],
+    [firstname, lastname, tel, email, address, username, password],
     (err, result) => {
       if (err) {
         console.error(err);
@@ -310,6 +300,7 @@ router.post("/addUser", (req, res) => {
     }
   );
 });
+
 
 //LogInUser
 router.post("/authenticateUser", async (req, res) => {
@@ -610,5 +601,54 @@ router.get("/book/fine/:id", (req, res) => {
     res.json({ books: results, count: results.length });
   });
 });
+
+router.post("/profile/update/:id", (req, res) => {
+  const userId = req.params.id;
+  const { firstname, lastname, email, telephone, address } = req.body;
+
+  // Begin the transaction
+  db.beginTransaction((err) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ error: "Error beginning transaction" });
+      return;
+    }
+
+    // Update user profile
+    const updateProfileSql =
+      "UPDATE user SET FirstName = ?, LastName = ?, Email = ?, TelNumber = ?, Address = ? WHERE User_ID = ?";
+    db.query(
+      updateProfileSql,
+      [firstname, lastname, email, telephone, address, userId],
+      (err, result) => {
+        if (err) {
+          console.error(err);
+          db.rollback(() => {
+            res
+              .status(500)
+              .json({ error: "Error updating user profile" });
+          });
+          return;
+        }
+
+        // Commit the transaction
+        db.commit((err) => {
+          if (err) {
+            console.error(err);
+            db.rollback(() => {
+              res
+                .status(500)
+                .json({ error: "Error committing transaction" });
+            });
+            return;
+          }
+
+          res.json({ message: "User profile updated successfully" });
+        });
+      }
+    );
+  });
+});
+
 
 module.exports = router;

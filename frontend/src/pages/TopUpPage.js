@@ -10,19 +10,19 @@ const TopUpPage = () => {
       <div>
         <p style={{fontSize: '20px', fontWeight: 'bold', marginTop: '50px', marginBottom: '30px', marginLeft: '50px'}}>Topup eMoney</p>
         <div className="topup-container">
-            <Button variant="outlined" className="topup-button" style={{marginRight: '50px', borderWidth: '2px', borderRadius: '30px', color: 'black'}}>
+            <Button variant="outlined" className="topup-button" value={100} style={{marginRight: '50px', borderWidth: '2px', borderRadius: '30px', color: 'black'}}>
                 100
             </Button>
-            <Button variant="outlined" className="topup-button" style={{marginRight: '50px', borderWidth: '2px', borderRadius: '30px', color: 'black'}}>
+            <Button variant="outlined" className="topup-button" value={200} style={{marginRight: '50px', borderWidth: '2px', borderRadius: '30px', color: 'black'}}>
                 200
             </Button>
-            <Button variant="outlined" className="topup-button" style={{marginRight: '50px', borderWidth: '2px', borderRadius: '30px', color: 'black'}}>
+            <Button variant="outlined" className="topup-button" value={300} style={{marginRight: '50px', borderWidth: '2px', borderRadius: '30px', color: 'black'}}>
                 300
             </Button>
-            <Button variant="outlined" className="topup-button" style={{marginRight: '50px', borderWidth: '2px', borderRadius: '30px', color: 'black'}}>
+            <Button variant="outlined" className="topup-button" value={400} style={{marginRight: '50px', borderWidth: '2px', borderRadius: '30px', color: 'black'}}>
                 400
             </Button>
-            <Button variant="outlined" className="topup-button" style={{marginRight: '50px', borderWidth: '2px', borderRadius: '30px', color: 'black'}}>
+            <Button variant="outlined" className="topup-button" value={500} style={{marginRight: '50px', borderWidth: '2px', borderRadius: '30px', color: 'black'}}>
                 500
             </Button>
         </div>
