@@ -13,13 +13,19 @@ import {
 } from "@mui/material";
 import { red } from "@mui/material/colors";
 import { useUser } from "../UserContext";
-import { FormatDate } from "../Config";
+import { FormatDate, FormatISBN } from "../Config";
 
 const HoldPage = () => {
   const [open, setOpen] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [selectedBookingId, setSelectedBookingId] = useState(null); // New state to store the selected booking ID
   const [bookData, setBookData] = useState([]);
   const { user } = useUser();
+  const [title, setTitle] = useState();
+  const [penName, setPenName] = useState();
+  const [isbn, setISBN] = useState();
+  const [publisher, setPublisher] = useState();
+  const [genre, setGenre] = useState();
 
   const arrayBufferToBase64 = (buffer) => {
     let binary = "";
@@ -30,7 +36,15 @@ const HoldPage = () => {
     return btoa(binary);
   };
 
-  const handleCancelClickOpen = () => {
+  
+
+  const handleCancelClickOpen = (bookingId, title, penName, ISBN, genre, publisher) => {
+    setSelectedBookingId(bookingId); // Set the selected booking ID
+    setISBN(ISBN);
+    setGenre(genre);
+    setPublisher(publisher);
+    setTitle(title);
+    setPenName(penName);
     setOpen(true);
   };
 
@@ -39,9 +53,52 @@ const HoldPage = () => {
   };
 
   const handleConfirm = () => {
-    setOpen(false);
-    setSnackbarOpen(true);
+    // Make an API call to cancel the reservation
+    fetch("http://localhost:5050/user/book/cancelReservation", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        bookingId: selectedBookingId,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // Handle the response from the API
+        console.log(data.message); // Log or handle the success message
+  
+        // Update the bookData state with the new data
+        setBookData((prevBookData) => {
+          // Find the index of the canceled booking in the current bookData
+          const canceledBookingIndex = prevBookData.findIndex(
+            (booking) => booking.Booking_ID === selectedBookingId
+          );
+  
+          if (canceledBookingIndex !== -1) {
+            // Create a copy of the current bookData array
+            const updatedBookData = [...prevBookData];
+  
+            // Remove the canceled booking from the array
+            updatedBookData.splice(canceledBookingIndex, 1);
+  
+            return updatedBookData;
+          }
+  
+          return prevBookData; // If the booking is not found, return the current state unchanged
+        });
+  
+        setSnackbarOpen(true); // Show success snackbar
+      })
+      .catch((error) => {
+        console.error("Error canceling reservation:", error);
+        // Handle the error, show an error snackbar, or other error handling logic
+      })
+      .finally(() => {
+        setOpen(false); // Close the dialog regardless of success or failure
+      });
   };
+  
 
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
@@ -63,7 +120,18 @@ const HoldPage = () => {
     <Box>
       {bookData &&
         bookData.map(
-          ({ BookImage, Title, PenName, BookingDate, ReceiveDueDate }, index) => (
+          (
+            {
+              Booking_ID,
+              BookImage,
+              Title,
+              PenName,
+              BookingDate,
+              ReceiveDueDate,
+              ISBN, PublisherName, GenreName
+            },
+            index
+          ) => (
             <React.Fragment key={index}>
               <div className="img-left-format" style={{ display: "flex" }}>
                 <img
@@ -83,7 +151,7 @@ const HoldPage = () => {
                   </div>
                 </div>
                 <Button
-                  onClick={handleCancelClickOpen}
+                  onClick={() => handleCancelClickOpen(Booking_ID, Title, PenName, ISBN, GenreName, PublisherName)}
                   className="cancel-button"
                   style={{
                     height: "35px",
@@ -121,18 +189,18 @@ const HoldPage = () => {
                         variant="body1"
                         style={{ color: "black" }}
                       >
-                        The Girl on the Train
+                        {title}
                         <br />
-                        By Paula Hawkins
+                        {penName}
                         <br />
-                        ISBN: 978-1594633669
+                        ISBN: {FormatISBN(isbn)}
                         <br />
-                        Genre: Thriller
+                        Genre: {genre}
                         <br />
                         <span>Publisher: </span>
-                        Riverhead Books
+                        {publisher}
                         <br />
-                        Reserve Date: 19/10/2023 13:32:00
+                        Reserve Date: {FormatDate(BookingDate)}
                       </Typography>
                     </DialogContentText>
                   </DialogContent>
