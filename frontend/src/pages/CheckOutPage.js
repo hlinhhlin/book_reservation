@@ -51,7 +51,7 @@ function CheckOutPage() {
                     </div>
                     <div
                       className="date-container"
-                      style={{ marginLeft: "100px" }}
+                      style={{ marginLeft: "90px" }}
                     >
                       <p>Return Date:</p>
                       <p>{FormatDate(ReturnDate)}</p>

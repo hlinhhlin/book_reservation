@@ -52,7 +52,7 @@ const TransactionHistoryPage = () => {
                   <p style={{ color: "#444444" }}>
                     Type: {capitalizeFirstLetter(Type)}
                   </p>
-                  <p style={{ color: "#444444" }}>
+                  <p style={{ color: "#444444", backgroundColor: "#e3ecfa", border: "1px solid #748aad", borderRadius: "15px", padding: "3px 10px", display: "inline-block"}}>
                     Status: {capitalizeFirstLetter(Status)}
                   </p>
                 </div>

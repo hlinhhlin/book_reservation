@@ -59,7 +59,7 @@ const BookFinePage = () => {
                 )}`}
                 alt="Book 2"
               />
-              <div className="text-format" style={{ marginLeft: "20px" }}>
+              <div className="text-format" style={{ marginLeft: "50px" }}>
                 <h4>Title: {Title}</h4>
                 <p>Author: {PenName}</p>
                 <div style={{ display: "flex" }}>
@@ -73,7 +73,7 @@ const BookFinePage = () => {
                 style={{
                   color: "red",
                   marginTop: "200px",
-                  marginLeft: "600px",
+                  marginLeft: "790px",
                 }}
               >
                 {Amount} BAHT

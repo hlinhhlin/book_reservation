@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../style.css";
 import { useUser } from "../UserContext";
+import { Box, Typography } from "@mui/material";
 
 function HomePage() {
   const [genres, setGenres] = useState([]);
@@ -21,14 +22,17 @@ function HomePage() {
   }, []);
 
   return (
-    <div className="book-grid">
-      {genres.map(({ GenreName, GenreImage }) => (
+
+    <Box>
+      <Typography variant="h5" style={{ marginTop: "30px", marginLeft: "30px", marginBottom: "30px", fontWeight: "1000"}}>Genre</Typography>
+      <div className="book-grid">
+        {genres.map(({ GenreName, GenreImage }) => (
         <div className="book-item" key={GenreName} onClick={handleClickGenre}>
-          <img src={`data:image/png;base64,${GenreImage}`} style={{borderRadius: 10}}/>
+          <img src={`data:image/png;base64,${GenreImage}`} style={{ height: "300px", width: "auto", borderRadius: 10}}/>
           <p className="genre">{GenreName}</p>
         </div>
       ))}
-
+    
       {/* <div className="book-item">
             <img src="bookcover2.jpg" alt="Book 2"/>
             <p className="genre">Mystery</p>
@@ -61,7 +65,10 @@ function HomePage() {
             <img src="bookcover9.jpg" alt="Book 9"/>
             <p className="genre">Kids</p>
         </div> */}
-    </div>
+
+      </div>
+    </Box>
+    
   );
 }
 

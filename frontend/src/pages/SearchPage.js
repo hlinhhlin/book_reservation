@@ -31,11 +31,11 @@ const SearchPage = () => {
         id="outlined-basic"
         label="Search in library"
         variant="outlined"
-        style={{ marginTop: "20px", marginLeft: "20px", width: "500px" }}
+        style={{ marginTop: "30px", marginLeft: "30px", marginBottom: "30px", width: "700px" }}
       />
       <Typography
         variant="h5"
-        style={{ margin: "20px", fontWeight: "1000"}}
+        style={{ marginLeft: "30px", marginBottom: "40px", fontWeight: "1000"}}
       >
         New Arrival
       </Typography>
@@ -58,7 +58,7 @@ const SearchPage = () => {
               />
               <Typography
                 variant="subtitle1"
-                style={{ margin: "20px", fontSize: "20px", cursor: "pointer" }}
+                style={{ margin: "20px", marginBottom: "40px", fontSize: "20px", cursor: "pointer" }}
               >
                 {Title}
               </Typography>
