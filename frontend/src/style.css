@@ -124,13 +124,14 @@
 
 /* ProfilePage.css */
 
-.profile-container{
+.left-content {
+  position: fixed;
+  margin-left: 50px;
+}
+
+.profile-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-top: 70px;
-  margin-bottom: 100px;
 }
 
 .circle-frame {
@@ -138,12 +139,9 @@
   height: 250px; /* Set the desired height */
   object-fit: cover; /* Ensure the image covers the circular frame */
   border-radius: 50%; /* Create a circular border */
-  margin-bottom: 30px;
-}
-
-.button-container {
-  display: flex;
-  margin-top: 20px;
+  margin-top: 50px;
+  margin-bottom: 25px;
+  margin-left: 200px;
 }
 
 .button { /*Only in profile age*/
@@ -166,7 +164,6 @@
   width: 200px;
   height: 70px;
 }
-
 
 .img-left-format img {
   width: auto;

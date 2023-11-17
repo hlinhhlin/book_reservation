@@ -15,7 +15,7 @@ const QRcode = () => {
         {/*<img src="qrcode.jpg" alt="qrcode" style={{ width: '350px', marginBottom: '30px' }} />*/}
         <div>
           <Typography variant="body1" style={{ fontSize: "20px", 
-        marginTop: '20px' }}>
+        marginTop: '50px' }}>
             Scan to identify your user
           </Typography>
           <Typography variant="body1" style={{ fontSize: "20px", fontWeight: 'bolder' }}>

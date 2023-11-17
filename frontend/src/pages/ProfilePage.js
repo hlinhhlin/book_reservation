@@ -51,9 +51,10 @@ const ProfilePage = () => {
   }, []);
 
   return (
+    <Box style={{ display: "flex" }}>
     <div className="profile-container">
       <img src="user.png" alt="user" className="circle-frame" />
-      <div style={{ display: "flex", alignItems: "center" }}>
+      <div style={{ display: "flex", marginLeft: "260px" }}>
         <Typography style={{ fontSize: "25px", marginRight: "2px" }}>
           {user.firstname + " " + user.lastname}
         </Typography>
@@ -62,22 +63,7 @@ const ProfilePage = () => {
           <EditIcon />{" "}
         </IconButton>
       </div>
-      <div style={{ display: "flex", marginTop: "60px" }}>
-        <Button
-          onClick={handleTopUpClick}
-          variant="contained"
-          color="primary"
-          style={{
-            width: "210px",
-            height: "80px",
-            marginRight: "40px",
-            textTransform: "none",
-            fontSize: "20px",
-            fontWeight: "bolder",
-          }}
-        >
-          + Topup eMoney
-        </Button>
+      <div style={{ display: "flex", marginTop: "60px", marginLeft: "100px" }}>
         <Typography
           style={{
             width: "210px",
@@ -85,6 +71,7 @@ const ProfilePage = () => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
+            marginRight: "40px",
             border: "1px solid #ccc",
             borderRadius: "5px",
             fontSize: "20px",
@@ -92,30 +79,51 @@ const ProfilePage = () => {
         >
           {totalAmount} Baht
         </Typography>
-      </div>
-      <div style={{ display: "flex", marginTop: "60px" }}>
+
         <Button
+          onClick={handleTopUpClick}
+          variant="contained"
+          color="primary"
+          style={{
+            width: "210px",
+            height: "80px",
+            textTransform: "none",
+            fontSize: "20px",
+            fontWeight: "bolder",
+          }}
+        >
+          + Topup eMoney
+        </Button>
+      </div>
+    </div>
+
+    {/* left side */}
+
+    <div style={{marginLeft: "150px", marginTop: "50px"}}>
+      <Button
           onClick={handleCheckOutClick}
           variant="contained"
           className="button"
           style={{
             textTransform: "none",
             marginRight: "20px",
+            marginBottom: "20px",
             fontSize: "18px",
             color: "black",
             background: "#f5f5f5",
           }}
         >
-          <img src="checkout.png" alt="Icon" style={{ marginBottom: "10px" }} />
+        <img src="checkout.png" alt="Icon" style={{ marginBottom: "10px" }} />
           Check Out
-        </Button>
-        <Button
+      </Button>
+      <Button
           onClick={handleHoldClick}
           variant="contained"
           className="button"
           style={{
             textTransform: "none",
             marginRight: "20px",
+            marginBottom: "20px",
             fontSize: "18px",
             color: "black",
             background: "#f5f5f5",
@@ -123,10 +131,8 @@ const ProfilePage = () => {
         >
           <img src="hold.png" alt="Icon" style={{ marginBottom: "10px" }} />
           Hold
-        </Button>
-      </div>
-      <div className="button-container">
-        <Button
+      </Button>
+      <Button
           onClick={handleBookFineClick}
           variant="contained"
           className="button"
@@ -140,8 +146,9 @@ const ProfilePage = () => {
         >
           <img src="bookfine.png" alt="Icon" style={{ marginBottom: "10px" }} />
           Book Fines
-        </Button>
-        <Button
+      </Button>
+
+      <Button
           onClick={handleTransactionHistoryClick}
           variant="contained"
           className="button"
@@ -160,8 +167,13 @@ const ProfilePage = () => {
           />
           Transaction History
         </Button>
-      </div>
+
     </div>
+   
+    
+   
+
+    </Box>
   );
 };
 
