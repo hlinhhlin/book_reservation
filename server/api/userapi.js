@@ -529,10 +529,12 @@ router.get("/checkout/:id", (req, res) => {
 
 router.get("/hold/:id", (req, res) => {
   const userId = req.params.id;
-  const query = `SELECT book.Title, Book.BookImage, author.PenName, booking.BookingDate, booking.ReceiveDueDate
+  const query = `SELECT book.Title, Book.BookImage, Book.ISBN, Genre.GenreName, author.PenName, Publisher.PublisherName, booking.Booking_ID, booking.BookingDate, booking.ReceiveDueDate
   FROM user 
   JOIN booking ON booking.User_ID = user.User_ID
   JOIN book ON booking.Book_ID = book.Book_ID
+  JOIN Publisher ON book.Publisher_ID = Publisher.Publisher_ID
+  JOIN Genre ON book.Genre_ID = Genre.Genre_ID
   JOIN author ON author.Author_ID = book.Author_ID
   WHERE user.User_ID = ? AND booking.Status = 'booked';
   `;
