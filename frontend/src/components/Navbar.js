@@ -25,6 +25,7 @@ import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
 import "../style.css";
 import { useAuth } from "../AuthContext";
+import shadows from "@mui/material/styles/shadows";
 
 export default function NavBarAndDrawer() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -118,8 +119,8 @@ export default function NavBarAndDrawer() {
   );
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" className="blended-background">
+    <Box sx={{ flexGrow: 1}}>
+      <AppBar position="static" className="blended-background" sx={{boxShadow: "0 3px 6px rgba(0, 0, 0, 0.1)"}}>
         <Toolbar>
           <Typography
             component="div"
