@@ -5,7 +5,7 @@ const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: 'root',
-  database: 'book-reservation-new',
+  database: 'book-reservation',
 });
 
 // Connect to the database;
