@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import {
   AppBar,
@@ -30,6 +30,13 @@ import shadows from "@mui/material/styles/shadows";
 export default function NavBarAndDrawer() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const { isAuthenticated, login, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSignOut = () => {
+    navigate('/');
+    logout();
+
+  }
 
   const toggleDrawer = (open) => (event) => {
     if (
@@ -106,7 +113,7 @@ export default function NavBarAndDrawer() {
       {
         isAuthenticated ? ( // Use the correct conditional rendering syntax
           <List>
-            <ListItemButton onClick={logout}>
+            <ListItemButton onClick={handleSignOut}>
               <ListItemIcon>
                 <LogoutIcon />
               </ListItemIcon>
