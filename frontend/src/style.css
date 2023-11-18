@@ -5,56 +5,63 @@
     align-items: center;
     padding: 10px 20px;
     display: flex;
-    
-  }
-  .home{
+}
+
+.home{
     font-size: 40px;
     margin-left: 30px;
-  }
-  .nav-icon .bar {
+}
+
+.nav-icon .bar {
     width: 30px;
     height: 2.5px;
     background-color: #fff;
     margin: 5px 0;
     text-align: right;
-  }
-  .nav-icon{
+}
+
+.nav-icon{
     cursor: pointer;
     margin-right: 30px;
-  }
-  .genre-text {
+}
+
+.genre-text {
     margin-left: 50px ; 
     font-size: 30px; 
     color: black;
-  }
-  .book-grid {
+}
+
+.book-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* 3 columns */
     gap: 20px; /* Gap between grid items */
     margin-top: 50px;
-  }
-  .book-item {
+}
+
+.book-item {
     text-align: center;
-  }
-  .book-item img {
+}
+
+.book-item img {
     width: auto;
     height: 200px; 
     display: block;
     margin: 0 auto; 
-  }
-  .genre{
+}
+
+.genre{
     font-size: 20px;
     padding: 20px; 
     margin-top: 5px;
     margin-bottom: 40px;
     cursor: pointer;
-  }
+}
 
-  .blended-background {
+.blended-background {
     background: linear-gradient(#FF9800, #EFBA00); 
-  }
+}
 
-  #search-box {
+#search-box {
     width: 700px; 
     height: 40px; 
     margin-top: 50px;
@@ -62,22 +69,22 @@
     margin-left: 50px; 
     border: 2px solid #ccc;
     border-radius: 5px;
-  }
+}
 
-  .imageStyle {
+.imageStyle {
     width: auto;
     height: 200px; 
     display: block;
     margin: 0 auto;
-  }
+}
   
-  .paperStyle {
+.paperStyle {
     text-align: center;
     /*margin:30px;
     padding: 30px 0px;*/
-   }
+}
 
-   .book-entry {
+.book-entry {
     display: flex;
     align-items: center;
     margin: 50px;
@@ -107,7 +114,7 @@
 }
 
 .body {
-  flex: 1; /* Fill remaining vertical space */
+  flex: 1; 
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -116,7 +123,7 @@
 }
 
 .qrcode-container {
-  height: 100vh; /* Set the height to 100% of the viewport height */
+  height: 100vh; 
   display: flex;
   justify-content: center;
   align-items: center;
@@ -135,16 +142,16 @@
 }
 
 .circle-frame {
-  width: 250px; /* Set the desired width */
-  height: 250px; /* Set the desired height */
-  object-fit: cover; /* Ensure the image covers the circular frame */
-  border-radius: 50%; /* Create a circular border */
+  width: 250px; 
+  height: 250px; 
+  object-fit: cover; 
+  border-radius: 50%; 
   margin-top: 50px;
   margin-bottom: 25px;
   margin-left: 200px;
 }
 
-.button { /*Only in profile age*/
+.button { /*Only in profile page*/
   width: 300px;
   height: 300px;
   display: flex;
@@ -163,6 +170,7 @@
   margin-right: 50px;
   width: 200px;
   height: 70px;
+  
 }
 
 .img-left-format img {
@@ -185,6 +193,15 @@
   line-height: 1.0;
   margin-top: 35px;
   color: #444444;
+}
+
+.payment-button { 
+  width: 300px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 
