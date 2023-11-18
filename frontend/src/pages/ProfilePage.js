@@ -2,15 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Typography, IconButton, Button, Box } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import "../style.css";
-import { useNavigate } from "react-router-dom";
-import EditProfilePage from "./EditProfilePage";
-import TopUpPage from "./TopUpPage";
-import CheckOutPage from "./CheckOutPage";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useUser } from "../UserContext";
 
 const ProfilePage = () => {
   const { user } = useUser();
   const navigate = useNavigate();
+  const location = useLocation();
   const [totalAmount, setTotalAmount] = useState(0);
 
   const handleEditClick = () => {
@@ -36,7 +34,7 @@ const ProfilePage = () => {
   const handleTransactionHistoryClick = () => {
     navigate("/transactionHistory");
   };
-
+  
   useEffect(() => {
     // Fetch transactions with 'successful' status when the component mounts
     fetch(`http://localhost:5050/user/transaction/${user.id}`)
@@ -46,21 +44,26 @@ const ProfilePage = () => {
         const successfulTransactions = data.filter(
           (transaction) => transaction.Status === 'successful'
         );
-  
+
         // Sum the Amount for 'successful' transactions
         const sumAmount = successfulTransactions.reduce(
           (total, item) => total + item.Amount,
           0
         );
-  
-        setTotalAmount(sumAmount);
+
+        if (location.state && location.state.totalAmount !== undefined) {
+          const selectedAmount = parseInt(location.state.totalAmount, 10); /*ตอนไม่แปลงบวกเป็นstring แต่พอเปนintแล้วค่าไม่บวก */ 
+          setTotalAmount((prevAmount) => prevAmount + selectedAmount);
+        } else {
+          setTotalAmount(sumAmount);
+        }
       })
       .catch((error) => {
         console.log("Error fetching transactions:", error);
       });
-  }, []);
+  }, [user.id, location.state]);
   
-
+  
   return (
     <Box style={{ display: "flex" }}>
     <div className="profile-container">
