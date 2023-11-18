@@ -30,6 +30,7 @@ function CheckOutPage() {
 
   return (
     <Box>
+      
       {bookData &&
         bookData.map(
           ({ Title, BookImage, PenName, BorrowDate, ReturnDate }, index) => (

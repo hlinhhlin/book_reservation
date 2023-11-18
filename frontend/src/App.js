@@ -26,8 +26,6 @@ import { UserProvider } from "./UserContext";
 import { AuthProvider } from "./AuthContext";
 
 
-
-
 export default function App() {
   return (
     <AuthProvider>

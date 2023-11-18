@@ -181,14 +181,10 @@ const ProfilePage = () => {
           />
           Transaction History
         </Button>
-
     </div>
-   
-    
-   
-
     </Box>
   );
+  
 };
 
 export default ProfilePage;

@@ -40,7 +40,7 @@ const BookFinePage = () => {
             color: "#757575"
           }}
         >
-          <Typography variant="h3">No Data</Typography>
+          <Typography style={{ fontSize: "20px", color: "#000000", backgroundColor: "#ffd2cf", border: "1px solid red", borderRadius: "15px", padding: "3px 15px", display: "inline-block"}}>No data recorded.</Typography>
         </div>
       ) : (
         bookData.map(

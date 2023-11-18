@@ -9,9 +9,8 @@ import {
   DialogContentText,
   DialogTitle,
   Snackbar,
-  SnackbarContent,
+  Alert,
 } from "@mui/material";
-import { red } from "@mui/material/colors";
 import { useUser } from "../UserContext";
 import { FormatDate, FormatISBN } from "../Config";
 
@@ -35,8 +34,6 @@ const HoldPage = () => {
     }
     return btoa(binary);
   };
-
-  
 
   const handleCancelClickOpen = (bookingId, title, penName, ISBN, genre, publisher) => {
     setSelectedBookingId(bookingId); // Set the selected booking ID
@@ -234,10 +231,9 @@ const HoldPage = () => {
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
         style={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}
       >
-        <SnackbarContent
-          style={{ backgroundColor: "#1DC64C", fontWeight: "bolder" }}
-          message="Successful !"
-        />
+         <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
+            Successful!
+        </Alert>
       </Snackbar>
     </Box>
   );

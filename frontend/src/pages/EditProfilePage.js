@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Typography, TextField, Button, IconButton, Box } from "@mui/material";
+import { Typography, TextField, Button, IconButton, Box, Snackbar, Alert } from "@mui/material";
 import { useUser, loginUser } from "../UserContext";
 import "../style.css";
 
@@ -10,6 +10,9 @@ const EditProfilePage = () => {
   const [email, setEmail] = useState("");
   const [telNumber, setTelNumber] = useState("");
   const [address, setAddress] = useState("");
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [successMessageOpen, setSuccessMessageOpen] = useState(false);
+  const [errorMessageOpen, setErrorMessageOpen] = useState(false);
 
   useEffect(() => {
     fetch(`http://localhost:5050/user/profile/${user.id}`)
@@ -46,17 +49,25 @@ const EditProfilePage = () => {
     setAddress(e.target.value);
   };
 
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false); // Close Snackbar
+  };
+
   const handleSubmit = () => {
-    // Prepare the data for the update
-    const updatedData = {
-      FirstName: firstName,
-      LastName: lastName,
-      Email: email,
-      TelNumber: telNumber,
-      Address: address,
-    };
+    if (!email || !telNumber || !address) {
+      setErrorMessageOpen(true);
+      return;
+    }
+
+  const updatedData = {
+    FirstName: firstName,
+    LastName: lastName,
+    Email: email,
+    TelNumber: telNumber,
+    Address: address,
+  };
   
-    console.log(updatedData);
+  console.log(updatedData);
   
     // Make the API call to update the data
     fetch(`http://localhost:5050/user/profile/update/${user.id}`, {
@@ -69,6 +80,7 @@ const EditProfilePage = () => {
       .then((response) => response.json())
       .then((data) => {
         console.log(data.message); // Log or handle the success message
+        setSuccessMessageOpen(true);
             fetch(`http://localhost:5050/user/profile/${user.id}`)
             .then((response) => response.json())
             .then((userData) => {
@@ -192,6 +204,32 @@ const EditProfilePage = () => {
         >
           Submit
         </Button>
+
+        {/* Snackbar for messages */}
+        <Snackbar
+        open={successMessageOpen}
+        autoHideDuration={3000}
+        onClose={() => setSuccessMessageOpen(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        style={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}
+      >
+        <Alert onClose={() => setSuccessMessageOpen(false)} severity="success" sx={{ width: '100%' }}>
+          Profile updated successfully!
+        </Alert>
+      </Snackbar>
+
+      <Snackbar
+        open={errorMessageOpen}
+        autoHideDuration={3000}
+        onClose={() => setErrorMessageOpen(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        style={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}
+      >
+        <Alert onClose={() => setErrorMessageOpen(false)} severity="error" sx={{ width: '100%' }}>
+          Please fill in all fields!
+        </Alert>
+      </Snackbar>
+     
       </div>
     </Box>
   );
