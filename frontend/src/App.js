@@ -9,13 +9,23 @@ import ProfilePage from "./pages/ProfilePage";
 import EditProfilePage from "./pages/EditProfilePage";
 import TopUpPage from "./pages/TopUpPage";
 import CheckOutPage from "./pages/CheckOutPage";
-
-
-import { UserProvider } from "./UserContext";
-import { AuthProvider } from "./AuthContext";
 import HoldPage from "./pages/HoldPage";
 import BookFinePage from "./pages/BookFinePage";
 import TransactionHistoryPage from "./pages/TransactionHistoryPage";
+import FictionPage from "./pages/FictionPage";
+import MysteryPage from "./pages/MysteryPage";
+import RomancePage from "./pages/RomancePage";
+import FantasyPage from "./pages/FantasyPage";
+import ThrillerPage from "./pages/ThrillerPage";
+import HorrorPage from "./pages/HorrorPage";
+import HistoryPage from "./pages/HistoryPage";
+import BiographyPage from "./pages/BiographyPage";
+import ComedyPage from "./pages/ComedyPage";
+
+import { UserProvider } from "./UserContext";
+import { AuthProvider } from "./AuthContext";
+
+
 
 
 export default function App() {
@@ -38,6 +48,15 @@ export default function App() {
               <Route path="/hold" element={<HoldPage />} /> 
               <Route path="/bookFine" element={<BookFinePage />} /> 
               <Route path="/transactionHistory" element={<TransactionHistoryPage />} /> 
+              <Route path="/fiction" element={<FictionPage />} /> 
+              <Route path="/mystery" element={<MysteryPage />} /> 
+              <Route path="/romance" element={<RomancePage />} /> 
+              <Route path="/fantasy" element={<FantasyPage />} /> 
+              <Route path="/thriller" element={<ThrillerPage />} /> 
+              <Route path="/horror" element={<HorrorPage />} /> 
+              <Route path="/history" element={<HistoryPage />} /> 
+              <Route path="/biography" element={<BiographyPage />} /> 
+              <Route path="/comedy" element={<ComedyPage />} /> 
             </Routes>
           </div>
         </UserProvider>

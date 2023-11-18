@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Typography, Divider, Paper } from '@mui/material';
 
-const HomeFiction = () => {
+const HorrorPage = () => {
     
   return (
     <Box>
@@ -14,7 +14,7 @@ const HomeFiction = () => {
             <Typography>Status: Available</Typography>
           </div>
         </div>
-        <Divider />
+        <hr/>
         <div className="book-entry">
           <img className="book-image" src="img2.jpg" alt="Book Image" />
           <div className="book-details">
@@ -23,7 +23,7 @@ const HomeFiction = () => {
             <Typography>Status: Available</Typography>
           </div>
         </div>
-        <Divider />
+        <hr/>
         <div className="book-entry">
           <img className="book-image" src="img3.jpg" alt="Book Image" />
           <div className="book-details">
@@ -32,7 +32,7 @@ const HomeFiction = () => {
             <Typography>Status: Available</Typography>
           </div>
         </div>
-        <Divider />
+        <hr/>
         <div className="book-entry">
           <img className="book-image" src="img4.jpg" alt="Book Image" />
           <div className="book-details">
@@ -41,7 +41,7 @@ const HomeFiction = () => {
             <Typography>Status: Available</Typography>
           </div>
         </div>
-        <Divider />
+        <hr/>
         <div className="book-entry">
           <img className="book-image" src="img5.jpg" alt="Book Image" />
           <div className="book-details">
@@ -55,4 +55,4 @@ const HomeFiction = () => {
   );
 };
 
-export default HomeFiction;
+export default HorrorPage;
