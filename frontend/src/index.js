@@ -1,8 +1,14 @@
-// index.js
-
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App'; // Import the App component
-import Home from './component/Home';
+import App from './App'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { ThemeProvider } from '@mui/material/styles';
+import customTheme from './customTheme';
+// import './index.css';
 
-ReactDOM.render(<Home />, document.getElementById('root')); // Assuming you have a div with the id 'root' in your HTML
+ReactDOM.render(
+    <ThemeProvider theme={customTheme}>
+      <App />
+    </ThemeProvider>,
+    document.getElementById('root')
+  );
