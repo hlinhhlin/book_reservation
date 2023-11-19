@@ -12,10 +12,10 @@ function HomePage() {
 
   const handleClickGenre = (genreName) => {
     if (genreName === genres[0].GenreName) {
-      navigate(`/fantasy`);
+      navigate(`/genre/fantasy`);
     }
     else if (genreName === genres[1].GenreName) {
-      navigate(`/comedy`);
+      navigate(`/genre/comedy`);
     }
     else if (genreName === genres[2].GenreName) {
       navigate(`/biography`);

@@ -21,9 +21,11 @@ import HorrorPage from "./pages/HorrorPage";
 import HistoryPage from "./pages/HistoryPage";
 import BiographyPage from "./pages/BiographyPage";
 import ComedyPage from "./pages/ComedyPage";
+import GenreBookPage from "./pages/GenreBookPage";
 
 import { UserProvider } from "./UserContext";
 import { AuthProvider } from "./AuthContext";
+import { GenreProvider } from "./GenreContext";
 
 
 export default function App() {
@@ -31,6 +33,7 @@ export default function App() {
     <AuthProvider>
       <Router>
         <UserProvider>
+          <GenreProvider>
           <div>
             <NavBar />
             <Routes>
@@ -46,17 +49,10 @@ export default function App() {
               <Route path="/hold" element={<HoldPage />} /> 
               <Route path="/bookFine" element={<BookFinePage />} /> 
               <Route path="/transactionHistory" element={<TransactionHistoryPage />} /> 
-              <Route path="/fiction" element={<FictionPage />} /> 
-              <Route path="/mystery" element={<MysteryPage />} /> 
-              <Route path="/romance" element={<RomancePage />} /> 
-              <Route path="/fantasy" element={<FantasyPage />} /> 
-              <Route path="/thriller" element={<ThrillerPage />} /> 
-              <Route path="/horror" element={<HorrorPage />} /> 
-              <Route path="/history" element={<HistoryPage />} /> 
-              <Route path="/biography" element={<BiographyPage />} /> 
-              <Route path="/comedy" element={<ComedyPage />} /> 
+              <Route path="/genre/:genre" element={<GenreBookPage />} />
             </Routes>
           </div>
+          </GenreProvider>
         </UserProvider>
       </Router>
     </AuthProvider>

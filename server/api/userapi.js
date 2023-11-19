@@ -33,7 +33,7 @@ router.get("/genres", (req, res) => {
 //HomePage>Genre
 router.get("/genre/:genre", (req, res) => {
   const genre = req.params.genre; // Extract the genre from the URL
-  const query = `SELECT PenName, Title, Status
+  const query = `SELECT PenName, BookImage, Title, Status
 FROM book 
 INNER JOIN genre ON book.GenreID = genre.GenreID
 INNER JOIN author ON author.AuthorID = book.AuthorID
