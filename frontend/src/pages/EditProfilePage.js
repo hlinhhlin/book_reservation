@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Typography, TextField, Button, IconButton, Box, Snackbar, Alert } from "@mui/material";
-import { useUser, loginUser } from "../UserContext";
+import { useUser, loginUser } from "../Context/UserContext";
 import "../style.css";
 
 const EditProfilePage = () => {

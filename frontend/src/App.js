@@ -22,37 +22,45 @@ import HistoryPage from "./pages/HistoryPage";
 import BiographyPage from "./pages/BiographyPage";
 import ComedyPage from "./pages/ComedyPage";
 import GenreBookPage from "./pages/GenreBookPage";
+import BookListPage from "./pages/BookListPage";
 
-import { UserProvider } from "./UserContext";
-import { AuthProvider } from "./AuthContext";
-import { GenreProvider } from "./GenreContext";
-
+import { UserProvider } from "./Context/UserContext";
+import { AuthProvider } from "./Context/AuthContext";
+import { GenreProvider } from "./Context/GenreContext";
+import { SearchProvider } from "./Context/SearchContext";
 
 export default function App() {
   return (
     <AuthProvider>
       <Router>
         <UserProvider>
-          <GenreProvider>
-          <div>
-            <NavBar />
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/search" element={<SearchPage />} />
-              <Route path="/qrcode" element={<QRcode />} />
-              <Route path="/profile" element={<ProfilePage />} />
-              <Route path="/editprofile" element={<EditProfilePage />} /> 
-              <Route path="/topup" element={<TopUpPage />} /> 
-              <Route path="/checkOut" element={<CheckOutPage />} /> 
-              <Route path="/hold" element={<HoldPage />} /> 
-              <Route path="/bookFine" element={<BookFinePage />} /> 
-              <Route path="/transactionHistory" element={<TransactionHistoryPage />} /> 
-              <Route path="/genre/:genre" element={<GenreBookPage />} />
-            </Routes>
-          </div>
-          </GenreProvider>
+          <SearchProvider>
+            <GenreProvider>
+              <div>
+                <NavBar />
+                <Routes>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/signup" element={<SignUp />} />
+                  <Route path="/search" element={<SearchPage />} />
+                  <Route path="/qrcode" element={<QRcode />} />
+                  <Route path="/profile" element={<ProfilePage />} />
+                  <Route path="/editprofile" element={<EditProfilePage />} />
+                  <Route path="/topup" element={<TopUpPage />} />
+                  <Route path="/checkOut" element={<CheckOutPage />} />
+                  <Route path="/hold" element={<HoldPage />} />
+                  <Route path="/bookFine" element={<BookFinePage />} />
+                  <Route path="/bookslist" element={<BookListPage />} />
+
+                  <Route
+                    path="/transactionHistory"
+                    element={<TransactionHistoryPage />}
+                  />
+                  <Route path="/genre/:genre" element={<GenreBookPage />} />
+                </Routes>
+              </div>
+            </GenreProvider>
+          </SearchProvider>
         </UserProvider>
       </Router>
     </AuthProvider>
