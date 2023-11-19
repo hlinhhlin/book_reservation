@@ -24,7 +24,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
 import "../style.css";
-import { useAuth } from "../AuthContext";
+import { useAuth } from "../Context/AuthContext";
 import shadows from "@mui/material/styles/shadows";
 
 export default function NavBarAndDrawer() {

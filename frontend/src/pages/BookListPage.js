@@ -1,19 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Box, Typography, Divider, Paper } from "@mui/material";
-import { useGenre } from "../Context/GenreContext";
-import { useParams } from "react-router-dom";
+import { useSearch } from "../Context/SearchContext";
 import { capitalizeFirstLetter } from "../Config";
 
-
-const GenreBookPage = () => {
-    const { genre } = useParams();
-    const { setGenre } = useGenre();  
+const BookListPage = () => {
     const [books, setBooks] = useState([]);
+    const { searchTerm } = useSearch();
 
   useEffect(() => {
-    setGenre(genre);
-
-    fetch(`http://localhost:5050/user/genre/${genre}`)
+    fetch(`http://localhost:5050/user/search/${searchTerm}`)
       .then((response) => response.json())
       .then((data) => {
         setBooks(data.books);
@@ -21,8 +16,7 @@ const GenreBookPage = () => {
       .catch((error) => {
         console.log("Error fetching books:", error);
       });
-      return () => setGenre(null);
-  }, [genre, setGenre]);
+  }, []);
 
   const arrayBufferToBase64 = (buffer) => {
     let binary = "";
@@ -65,7 +59,7 @@ const GenreBookPage = () => {
               margin: "340px 590px",
             }}
           >
-            No book data available.
+            No book data available
           </Typography>
         )}
       </Paper>
@@ -73,4 +67,4 @@ const GenreBookPage = () => {
   );
 };
 
-export default GenreBookPage;
+export default BookListPage;

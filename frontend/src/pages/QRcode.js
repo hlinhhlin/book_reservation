@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
 import QRCode from "react-qr-code";
-import { useUser } from "../UserContext";
+import { useUser } from "../Context/UserContext";
 
 
 const QRcode = () => {

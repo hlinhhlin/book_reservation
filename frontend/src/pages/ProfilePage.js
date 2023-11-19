@@ -3,7 +3,7 @@ import { Typography, IconButton, Button, Box } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import "../style.css";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useUser } from "../UserContext";
+import { useUser } from "../Context/UserContext";
 
 const ProfilePage = () => {
   const { user } = useUser();

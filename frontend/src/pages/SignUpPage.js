@@ -10,8 +10,8 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Alert from '@mui/material/Alert';
 import { useNavigate } from "react-router-dom";
-import { useUser } from '../UserContext';
-import { useAuth } from "../AuthContext";
+import { useUser } from '../Context/UserContext';
+import { useAuth } from "../Context/AuthContext";
 
 
 export default function SignUp() {

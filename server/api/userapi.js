@@ -54,7 +54,7 @@ router.get("/search/:searchword", (req, res) => {
   const searchQuery = req.params.searchword; // Get the search query from the request's query parameters
   // SQL query to search for books by 'Title,' 'PenName,' or 'PublisherName'
   const query = `
-    SELECT PenName, Title, Status
+    SELECT PenName, BookImage, Title, Status
     FROM book 
     INNER JOIN genre ON book.GenreID = genre.GenreID
     INNER JOIN author ON author.AuthorID = book.AuthorID

@@ -1,8 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { Typography, Box, TextField, Grid, Paper } from "@mui/material";
+import { Typography, Box, TextField, Grid, Paper, Button } from "@mui/material";
+import { useSearch } from "../Context/SearchContext";
+import { useNavigate } from "react-router-dom";
 
 const SearchPage = () => {
   const [bookLatest, setBookLatest] = useState([]);
+  const { searchTerm, updateSearchTerm } = useSearch();
+  const navigate = useNavigate();
+
+  const handleSearch = (term) => {
+    updateSearchTerm(term);
+  };
+
+  const handleSubmit = () => {
+    navigate('/bookslist'); // Redirect to the book list page
+  }
 
   useEffect(() => {
     fetch("http://localhost:5050/user/books/latest")
@@ -31,8 +43,18 @@ const SearchPage = () => {
         id="outlined-basic"
         label="Search in library"
         variant="outlined"
+        value={searchTerm}
+        onChange={(e) => handleSearch(e.target.value)}
         style={{ marginTop: "30px", marginLeft: "30px", marginBottom: "30px", width: "700px" }}
       />
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleSubmit}
+        style={{ marginLeft: "30px", marginBottom: "20px", marginTop: "40px" }}
+      >
+        Search
+      </Button>
       <Typography
         variant="h5"
         style={{ marginLeft: "30px", marginBottom: "40px", fontWeight: "1000"}}
@@ -54,7 +76,7 @@ const SearchPage = () => {
                 )}`}
                 className="ImageStyle"
                 alt={Title} 
-                style={{ width: "auto", height: "300px", objectFit: "cover", borderRadius: 10 }} //ไม่ใช้แล้วมันไม่ได้ TT
+                style={{ width: "auto", height: "300px", objectFit: "cover", borderRadius: 10 }}
               />
               <Typography
                 variant="subtitle1"

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../style.css";
-import { useUser } from "../UserContext";
+import { useUser } from "../Context/UserContext";
 import { Box, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
@@ -18,25 +18,25 @@ function HomePage() {
       navigate(`/genre/comedy`);
     }
     else if (genreName === genres[2].GenreName) {
-      navigate(`/biography`);
+      navigate(`/genre/biography`);
     }
     else if (genreName === genres[3].GenreName) {
-      navigate(`/romance`);
+      navigate(`/genre/romance`);
     }
     else if (genreName === genres[4].GenreName) {
-      navigate(`/horror`);
+      navigate(`/genre/horror`);
     }
     else if (genreName === genres[5].GenreName) {
-      navigate(`/history`);
+      navigate(`/genre/history`);
     }
     else if (genreName === genres[6].GenreName) {
-      navigate(`/fiction`);
+      navigate(`/genre/fiction`);
     }
     else if (genreName === genres[7].GenreName) {
-      navigate(`/mystery`);
+      navigate(`/genre/mystery`);
     }
     else if (genreName === genres[8].GenreName) {
-      navigate(`/thriller`);
+      navigate(`/genre/thriller`);
     }
   };
 
