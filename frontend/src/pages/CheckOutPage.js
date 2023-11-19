@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { FormatDate } from "../Config";
 import { useUser } from "../UserContext";
 
@@ -30,43 +30,55 @@ function CheckOutPage() {
 
   return (
     <Box>
-      
-      {bookData &&
-        bookData.map(
-          ({ Title, BookImage, PenName, BorrowDate, ReturnDate }, index) => (
-            <React.Fragment key={index}>
-              <div className="img-left-format" style={{ display: "flex" }}>
-                <img
-                  src={`data:image/jpeg;base64,${arrayBufferToBase64(
-                    BookImage.data
-                  )}`}
-                  alt="Book 2"
-                />
-                <div className="text-format">
-                  <h4>Title: {Title}</h4>
-                  <p>Author: {PenName}</p>
-                  <div style={{ display: "flex" }}>
-                    <div className="date-container">
-                      <p>Borrowed Date:</p>
-                      <p>{FormatDate(BorrowDate)}</p>
-                    </div>
-                    <div
-                      className="date-container"
-                      style={{ marginLeft: "90px" }}
-                    >
-                      <p>Return Date:</p>
-                      <p>{FormatDate(ReturnDate)}</p>
-                    </div>
+      {bookData === undefined || bookData.length === 0 ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "90vh",
+            color: "#757575",
+          }}
+        >
+          <Typography style={{ fontSize: "20px", color: "#000000", backgroundColor: "#ffd2cf", border: "1px solid red", borderRadius: "15px", padding: "3px 15px", display: "inline-block"}}>No data recorded.</Typography>
+        </div>
+      ) : (
+        bookData &&
+        bookData.map(({ Title, BookImage, PenName, BorrowDate, ReturnDate }, index) => (
+          <React.Fragment key={index}>
+            <div className="img-left-format" style={{ display: "flex" }}>
+              <img
+                src={`data:image/jpeg;base64,${arrayBufferToBase64(
+                  BookImage.data
+                )}`}
+                alt="Book 2"
+              />
+              <div className="text-format">
+                <h4>Title: {Title}</h4>
+                <p>Author: {PenName}</p>
+                <div style={{ display: "flex" }}>
+                  <div className="date-container">
+                    <p>Borrowed Date:</p>
+                    <p>{FormatDate(BorrowDate)}</p>
+                  </div>
+                  <div
+                    className="date-container"
+                    style={{ marginLeft: "90px" }}
+                  >
+                    <p>Return Date:</p>
+                    <p>{FormatDate(ReturnDate)}</p>
                   </div>
                 </div>
               </div>
-              {index < bookData.length - 1 && <hr />}{" "}
-              {/* Add horizontal line if it's not the last item */}
-            </React.Fragment>
-          )
-        )}
+            </div>
+            {index < bookData.length - 1 && <hr />}{" "}
+            {/* Add horizontal line if it's not the last item */}
+          </React.Fragment>
+        ))
+      )}
     </Box>
   );
+  
 }
 
 export default CheckOutPage;

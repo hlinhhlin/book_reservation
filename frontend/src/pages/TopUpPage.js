@@ -18,12 +18,11 @@ const TopUpPage = () => {
 
     const handleConfirmClick = () => {
         if (selectedAmount !== null) {
-          navigate('/profile', { state: { totalAmount: selectedAmount } });
-        } else {
-          console.error('No amount selected.');
-        }
-      };
-      
+            navigate('/profile', { state: { totalAmount: selectedAmount } });
+          } else {
+            console.error('No amount selected.');
+          }
+    };
 
     const handleCancelClick = () => {
         navigate("/profile");

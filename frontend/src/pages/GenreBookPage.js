@@ -64,7 +64,7 @@ const GenreBookPage = () => {
               margin: "340px 590px",
             }}
           >
-            No book data available
+            No book data available.
           </Typography>
         )}
       </Paper>
