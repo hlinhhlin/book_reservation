@@ -12,15 +12,6 @@ import CheckOutPage from "./pages/CheckOutPage";
 import HoldPage from "./pages/HoldPage";
 import BookFinePage from "./pages/BookFinePage";
 import TransactionHistoryPage from "./pages/TransactionHistoryPage";
-import FictionPage from "./pages/FictionPage";
-import MysteryPage from "./pages/MysteryPage";
-import RomancePage from "./pages/RomancePage";
-import FantasyPage from "./pages/FantasyPage";
-import ThrillerPage from "./pages/ThrillerPage";
-import HorrorPage from "./pages/HorrorPage";
-import HistoryPage from "./pages/HistoryPage";
-import BiographyPage from "./pages/BiographyPage";
-import ComedyPage from "./pages/ComedyPage";
 import GenreBookPage from "./pages/GenreBookPage";
 import BookListPage from "./pages/BookListPage";
 
@@ -51,7 +42,6 @@ export default function App() {
                   <Route path="/hold" element={<HoldPage />} />
                   <Route path="/bookFine" element={<BookFinePage />} />
                   <Route path="/bookslist" element={<BookListPage />} />
-
                   <Route
                     path="/transactionHistory"
                     element={<TransactionHistoryPage />}

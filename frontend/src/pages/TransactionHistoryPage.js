@@ -12,7 +12,7 @@ const TransactionHistoryPage = () => {
     fetch(`http://localhost:5050/user/transaction/${user.id}`)
       .then((response) => response.json())
       .then((data) => {
-        setTransaction(data);
+        setTransaction(Array.isArray(data) ? data : []);
       })
       .catch((error) => {
         console.log("Error fetching transactions:", error);
@@ -44,7 +44,7 @@ const TransactionHistoryPage = () => {
                 <div
                   style={{
                     marginLeft: "50px",
-                    marginTop: "50px",
+                    marginTop: "20px",
                     lineHeight: "1.5",
                   }}
                 >
@@ -65,7 +65,7 @@ const TransactionHistoryPage = () => {
                           : Type === "top-up"
                           ? "green"
                           : "black",
-                      marginTop: "100px",
+                      marginTop: "110px",
                       marginLeft: "1100px",
                     }}
                   >

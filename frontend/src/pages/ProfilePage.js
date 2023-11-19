@@ -44,16 +44,17 @@ const ProfilePage = () => {
         const successfulTransactions = data.filter(
           (transaction) => transaction.Status === 'successful'
         );
-
+  
         // Sum the Amount for 'successful' transactions
         const sumAmount = successfulTransactions.reduce(
           (total, item) => total + item.Amount,
           0
         );
-
+  
+        // Check if there's a selected amount from the TopUpPage
         if (location.state && location.state.totalAmount !== undefined) {
-          const selectedAmount = parseInt(location.state.totalAmount, 10); /*ตอนไม่แปลงบวกเป็นstring แต่พอเปนintแล้วค่าไม่บวก */ 
-          setTotalAmount((prevAmount) => prevAmount + selectedAmount);
+          const selectedAmount = parseInt(location.state.totalAmount, 10);
+          setTotalAmount(sumAmount + selectedAmount); // Update the total amount
         } else {
           setTotalAmount(sumAmount);
         }
@@ -62,6 +63,7 @@ const ProfilePage = () => {
         console.log("Error fetching transactions:", error);
       });
   }, [user.id, location.state]);
+  
   
   
   return (
@@ -112,7 +114,6 @@ const ProfilePage = () => {
     </div>
 
     {/* left side */}
-
     <div style={{marginLeft: "150px", marginTop: "50px"}}>
       <Button
           onClick={handleCheckOutClick}
@@ -188,3 +189,4 @@ const ProfilePage = () => {
 };
 
 export default ProfilePage;
+

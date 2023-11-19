@@ -78,7 +78,7 @@ const BookFinePage = () => {
               >
                 {Amount} BAHT
               </h5>
-              {index < bookData.length - 1 && <hr />}
+              {index < bookData.length - 1 && <hr />}{" "}
               {/* Add horizontal line if it's not the last item */}
             </div>
           )
