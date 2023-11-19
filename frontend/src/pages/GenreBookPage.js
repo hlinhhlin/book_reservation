@@ -37,7 +37,7 @@ const GenreBookPage = () => {
     <Box>
       <Paper elevation={0} variant="outlined">
         {books.length > 0 ? (
-          books.map(({ Title, BookImage, Status, PenName }, index) => (
+          books.map(({ Title, BookImage, Status,PublisherName, PenName }, index) => (
             <div key={index} className="book-entry">
               {console.log("BookImage:", BookImage)}
               <img
@@ -47,7 +47,8 @@ const GenreBookPage = () => {
               />
               <div className="book-details">
                 <Typography variant="h5">{Title}</Typography>
-                <Typography>{PenName}</Typography>
+                <Typography>Author: {PenName}</Typography>
+                <Typography>Publisher: {PublisherName}</Typography>
                 <Typography>Status: {capitalizeFirstLetter(Status)}</Typography>
               </div>
             </div>

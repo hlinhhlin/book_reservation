@@ -33,9 +33,10 @@ router.get("/genres", (req, res) => {
 //HomePage>Genre
 router.get("/genre/:genre", (req, res) => {
   const genre = req.params.genre; // Extract the genre from the URL
-  const query = `SELECT PenName, BookImage, Title, Status
+  const query = `SELECT PenName, BookImage,PublisherName, Title, Status
 FROM book 
 INNER JOIN genre ON book.GenreID = genre.GenreID
+INNER JOIN publisher ON publisher.PublisherID = book.PublisherID
 INNER JOIN author ON author.AuthorID = book.AuthorID
 WHERE genre.GenreName = '${genre}';
   `; // Use a prepared statement
@@ -54,7 +55,7 @@ router.get("/search/:searchword", (req, res) => {
   const searchQuery = req.params.searchword; // Get the search query from the request's query parameters
   // SQL query to search for books by 'Title,' 'PenName,' or 'PublisherName'
   const query = `
-    SELECT PenName, BookImage, Title, Status
+    SELECT PenName, BookImage, Title, Status, PublisherName
     FROM book 
     INNER JOIN genre ON book.GenreID = genre.GenreID
     INNER JOIN author ON author.AuthorID = book.AuthorID
