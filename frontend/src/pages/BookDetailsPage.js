@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, Button, Typography, Paper, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Snackbar, Alert, autocompleteClasses, colors } from "@mui/material";
 import { useBook } from "../Context/BookContext";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate  } from "react-router-dom";
 import { capitalizeFirstLetter } from "../Config";
 import { useUser } from "../Context/UserContext";
 import { FormatDate, FormatISBN } from "../Config";
@@ -20,6 +20,7 @@ const BookDetailsPage = () => {
   const [open, setOpen] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const date = new Date();
+  const navigate = useNavigate();
   
 
   useEffect(() => {
@@ -35,6 +36,8 @@ const BookDetailsPage = () => {
   }, [bookID, setBook]);
 
   const handleReserveClickOpen = (title, penName, ISBN, genre, publisher) => {
+
+    
     setISBN(ISBN);
     setGenre(genre);
     setPublisher(publisher);
@@ -48,6 +51,12 @@ const BookDetailsPage = () => {
   };
 
   const handleConfirm = () => {
+
+    if (!user || !user.id) {
+      // User is not signed in, navigate to sign-in page
+      navigate("/signup"); 
+      return;
+    }
     const userID = user.id;
     console.log("hey UserID: ",userID);
     console.log("hey BookID: ",bookID);
