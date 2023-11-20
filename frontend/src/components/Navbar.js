@@ -32,6 +32,10 @@ export default function NavBarAndDrawer() {
   const { isAuthenticated, login, logout } = useAuth();
   const navigate = useNavigate();
 
+  const handleHomeButton = () => {
+    navigate('/');
+
+  }
   const handleSignOut = () => {
     navigate('/');
     logout();
@@ -130,6 +134,7 @@ export default function NavBarAndDrawer() {
       <AppBar position="static" className="blended-background" sx={{boxShadow: "0 3px 6px rgba(0, 0, 0, 0.1)"}}>
         <Toolbar>
           <Typography
+          onClick={handleHomeButton}
             component="div"
             sx={{
               flexGrow: 1,
