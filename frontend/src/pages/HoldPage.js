@@ -36,6 +36,7 @@ const HoldPage = () => {
   };
 
   const handleCancelClickOpen = (bookingId, title, penName, ISBN, genre, publisher) => {
+    console.log(bookingId);
     setSelectedBookingId(bookingId); // Set the selected booking ID
     setISBN(ISBN);
     setGenre(genre);
@@ -50,6 +51,7 @@ const HoldPage = () => {
   };
 
   const handleConfirm = () => {
+    console.log(selectedBookingId);
     // Make an API call to cancel the reservation
     fetch("http://localhost:5050/user/book/cancelReservation", {
       method: "POST",
@@ -69,7 +71,7 @@ const HoldPage = () => {
         setBookData((prevBookData) => {
           // Find the index of the canceled booking in the current bookData
           const canceledBookingIndex = prevBookData.findIndex(
-            (booking) => booking.Booking_ID === selectedBookingId
+            (booking) => booking.BookingID === selectedBookingId
           );
   
           if (canceledBookingIndex !== -1) {
@@ -84,7 +86,6 @@ const HoldPage = () => {
   
           return prevBookData; // If the booking is not found, return the current state unchanged
         });
-  
         setSnackbarOpen(true); // Show success snackbar
       })
       .catch((error) => {
@@ -129,7 +130,7 @@ const HoldPage = () => {
         </div>
       ) : (
         bookData &&
-        bookData.map(({ Booking_ID, BookImage, Title, PenName, BookingDate, ReceiveDueDate, ISBN, PublisherName, GenreName }, index) => (
+        bookData.map(({ BookingID, BookImage, Title, PenName, BookingDate, ReceiveDueDate, ISBN, PublisherName, GenreName }, index) => (
           <React.Fragment key={index}>
             <div className="img-left-format" style={{ display: "flex" }}>
               <img
@@ -149,7 +150,7 @@ const HoldPage = () => {
                 </div>
               </div>
               <Button
-                onClick={() => handleCancelClickOpen(Booking_ID, Title, PenName, ISBN, GenreName, PublisherName)}
+                onClick={() => handleCancelClickOpen(BookingID, Title, PenName, ISBN, GenreName, PublisherName)}
                 className="cancel-button"
                 style={{
                   height: "35px",
@@ -169,7 +170,54 @@ const HoldPage = () => {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
               >
-                {/* ... Dialog content ... */}
+                <DialogTitle
+                    id="alert-dialog-title"
+                    style={{
+                      fontWeight: "bolder",
+                      color: "white",
+                      backgroundColor: "#FF0101",
+                      marginBottom: "20px",
+                    }}
+                  >
+                    Hold Cancellation Confirmation
+                  </DialogTitle>
+                  <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                      <Typography
+                        component="div"
+                        variant="body1"
+                        style={{ color: "black" }}
+                      >
+                        {title}
+                        <br />
+                        {penName}
+                        <br />
+                        ISBN: {FormatISBN(isbn)}
+                        <br />
+                        Genre: {genre}
+                        <br />
+                        <span>Publisher: </span>
+                        {publisher}
+                        <br />
+                        Reserve Date: {FormatDate(BookingDate)}
+                      </Typography>
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button
+                      onClick={handleClose}
+                      style={{ fontWeight: "bolder" }}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      onClick={handleConfirm}
+                      autoFocus
+                      style={{ fontWeight: "bolder" }}
+                    >
+                      Confirm
+                    </Button>
+                  </DialogActions>
               </Dialog>
             </div>
             {index < bookData.length - 1 && <hr />}{" "}
