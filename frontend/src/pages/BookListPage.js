@@ -4,8 +4,8 @@ import { useSearch } from "../Context/SearchContext";
 import { capitalizeFirstLetter } from "../Config";
 
 const BookListPage = () => {
-    const [books, setBooks] = useState([]);
-    const { searchTerm } = useSearch();
+  const [books, setBooks] = useState([]);
+  const { searchTerm } = useSearch();
 
   useEffect(() => {
     fetch(`http://localhost:5050/user/search/${searchTerm}`)
@@ -31,22 +31,35 @@ const BookListPage = () => {
     <Box>
       <Paper elevation={0} variant="outlined">
         {books.length > 0 ? (
-          books.map(({ Title, BookImage, PublisherName, Status, PenName }, index) => (
-            <div key={index} className="book-entry">
-              {console.log("BookImage:", BookImage)}
-              <img
-                className="book-image"
-                src={`data:image/jpeg;base64,${arrayBufferToBase64(BookImage.data)}`}
-                alt="Book Cover"
-              />
-              <div className="book-details">
-                <Typography variant="h5">{Title}</Typography>
-                <Typography>Author: {PenName}</Typography>
-                <Typography>Publisher: {PublisherName}</Typography>
-                <Typography>Status: {capitalizeFirstLetter(Status)}</Typography>
+          books.map(
+            ({ Title, BookImage, PublisherName, Status, PenName }, index) => (
+              <div key={index} className="book-entry">
+                {console.log("BookImage:", BookImage)}
+                <img
+                  className="book-image"
+                  src={`data:image/jpeg;base64,${arrayBufferToBase64(
+                    BookImage.data
+                  )}`}
+                  alt="Book Cover"
+                />
+                <div className="book-details">
+                  <Typography variant="h5">{Title}</Typography>
+                  <Typography>Author: {PenName}</Typography>
+                  <Typography>Publisher: {PublisherName}</Typography>
+                  <Typography>
+                    Status:{" "}
+                    <span
+                      style={{
+                        color: Status === "unavailable" ? "red" : "green",
+                      }}
+                    >
+                      {capitalizeFirstLetter(Status)}
+                    </span>
+                  </Typography>
+                </div>
               </div>
-            </div>
-          ))
+            )
+          )
         ) : (
           <Typography
             style={{

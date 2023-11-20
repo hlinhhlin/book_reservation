@@ -52,6 +52,7 @@ function CheckOutPage() {
                   BookImage.data
                 )}`}
                 alt="Book 2"
+                style={{borderRadius: 10}}
               />
               <div className="text-format">
                 <h4>Title: {Title}</h4>

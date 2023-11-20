@@ -57,7 +57,7 @@ const BookFinePage = () => {
                 src={`data:image/jpeg;base64,${arrayBufferToBase64(
                   BookImage.data
                 )}`}
-                alt="Book 2"
+                style={{borderRadius: 10}}
               />
               <div className="text-format" style={{ marginLeft: "50px" }}>
                 <h4>Title: {Title}</h4>
@@ -73,7 +73,7 @@ const BookFinePage = () => {
                 style={{
                   color: "red",
                   marginTop: "200px",
-                  marginLeft: "790px",
+                  marginLeft: "550px",
                 }}
               >
                 {Amount} BAHT
