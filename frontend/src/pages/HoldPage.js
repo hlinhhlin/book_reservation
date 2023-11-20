@@ -141,8 +141,8 @@ const HoldPage = () => {
                 style={{borderRadius: 10}}
               />
               <div className="text-format">
-                <h4>Title: {Title}</h4>
-                <p>Author: {PenName}</p>
+                <h4> {Title}</h4>
+                <p> {PenName}</p>
                 <div style={{ display: "flex" }}>
                   <div className="date-container">
                     <p>Expected Receiving Date:</p>

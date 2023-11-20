@@ -4,8 +4,12 @@ const FormatDate = (dateString) => {
   const day = originalDate.getDate().toString().padStart(2, "0");
   const month = (originalDate.getMonth() + 1).toString().padStart(2, "0");
   const year = originalDate.getFullYear();
+  const hours = originalDate.getHours().toString().padStart(2, "0");
+  const minutes = originalDate.getMinutes().toString().padStart(2, "0");
+  const seconds = originalDate.getSeconds().toString().padStart(2, "0");
+  
 
-  return `${day}-${month}-${year}`;
+  return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
 };
 
 // Function to format ISBN with dashes

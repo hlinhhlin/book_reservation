@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, Typography, Divider, Paper } from "@mui/material";
 import { useGenre } from "../Context/GenreContext";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { capitalizeFirstLetter } from "../Config";
 
 
@@ -9,6 +9,7 @@ const GenreBookPage = () => {
     const { genre } = useParams();
     const { setGenre } = useGenre();  
     const [books, setBooks] = useState([]);
+    const navigate = useNavigate();
 
   useEffect(() => {
     setGenre(genre);
@@ -33,12 +34,16 @@ const GenreBookPage = () => {
     return btoa(binary);
   };
 
+  const handleBookClick = (bookId) => {
+    navigate(`/book/${bookId}`);
+  };
+  
   return (
     <Box>
       <Paper elevation={0} variant="outlined">
         {books.length > 0 ? (
-          books.map(({ Title, BookImage, Status,PublisherName, PenName }, index) => (
-            <div key={index} className="book-entry">
+          books.map(({ Title, BookImage, Status,PublisherName, PenName, bookID }, index) => (
+            <div key={index} className="book-entry" onClick={() => handleBookClick(bookID)}>
               {console.log("BookImage:", BookImage)}
               <img
                 className="book-image"

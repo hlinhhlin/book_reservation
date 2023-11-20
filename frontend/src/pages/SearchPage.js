@@ -37,6 +37,10 @@ const SearchPage = () => {
     return btoa(binary);
   };
 
+  const handleBookClick = (bookId) => {
+    navigate(`/book/${bookId}`);
+  };
+
   return (
     <Box>
       <TextField
@@ -62,12 +66,13 @@ const SearchPage = () => {
         New Arrival
       </Typography>
       <Grid container spacing={2}>
-        {bookLatest.map(({ BookImage, Title }) => (
+        {bookLatest.map(({ BookImage, Title,BookID }) => (
           <Grid item xs={4} key={Title}>
             <Paper
               elevation={3}
               className="paperStyle"
               style={{ boxShadow: "none" }}
+              onClick ={() => handleBookClick(BookID)}
             >
               {console.log(BookImage.data)}
               <img

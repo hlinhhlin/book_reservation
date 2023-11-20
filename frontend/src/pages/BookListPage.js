@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Box, Typography, Divider, Paper } from "@mui/material";
-import { useSearch } from "../Context/SearchContext";
+import { useSearch, } from "../Context/SearchContext";
 import { capitalizeFirstLetter } from "../Config";
+import { useNavigate } from "react-router-dom";
 
 const BookListPage = () => {
   const [books, setBooks] = useState([]);
   const { searchTerm } = useSearch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch(`http://localhost:5050/user/search/${searchTerm}`)
@@ -27,13 +29,17 @@ const BookListPage = () => {
     return btoa(binary);
   };
 
+  const handleBookClick = (bookId) => {
+    navigate(`/book/${bookId}`);
+  };
+
   return (
     <Box>
       <Paper elevation={0} variant="outlined">
         {books.length > 0 ? (
           books.map(
-            ({ Title, BookImage, PublisherName, Status, PenName }, index) => (
-              <div key={index} className="book-entry">
+            ({ Title, BookImage, PublisherName, Status, PenName, BookID }, index) => (
+              <div key={index} className="book-entry" onClick={() => handleBookClick(BookID)} >
                 {console.log("BookImage:", BookImage)}
                 <img
                   className="book-image"
