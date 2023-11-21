@@ -5,6 +5,7 @@ const db = require("../db"); // Import the 'db' connection module
 router.post("/book/borrow", (req, res) => {
   const { bookingId } = req.body;
   const today = new Date();
+  today.setHours(today.getHours() + 7); // Adding 7 hours to set it to GMT+7
 
   // Transaction to ensure both INSERT and UPDATE queries are executed or none
   db.beginTransaction((err) => {
@@ -35,69 +36,90 @@ router.post("/book/borrow", (req, res) => {
       const userId = results[0].UserID;
       const bookId = results[0].BookID;
 
-      // Insert into borrowing table
-      const bookSql =
-        "INSERT INTO Borrowing (UserID, BookID, BorrowDate, ReturnDate, Status) VALUES (?, ?, ?, ?, 'borrowed')";
+      // Check if the user has more than 5 borrowings
+      const countBorrowingsSql = "SELECT COUNT(*) AS borrowingCount FROM Borrowing WHERE UserID = ? AND Status='borrowed'";
+      db.query(countBorrowingsSql, [userId], (err, result) => {
+        if (err) {
+          console.error(err);
+          db.rollback(() => {
+            res.status(500).json({ error: "Error checking user borrowings" });
+          });
+          return;
+        }
 
-      const returnDate = new Date();
-      returnDate.setDate(today.getDate() + 14);
+        const borrowingCount = result[0].borrowingCount;
 
-      const formattedReturnDate = returnDate.toISOString().slice(0, 19).replace("T", " ");
+        if (borrowingCount >= 5) {
+          res.status(400).json({ error: "User has reached the maximum number of borrowings (5)" });
+          return;
+        }
 
-      db.query(
-        bookSql,
-        [
-          userId,
-          bookId,
-          today.toISOString().slice(0, 19).replace("T", " "),
-          formattedReturnDate,
-        ],
-        (err, result) => {
-          if (err) {
-            console.error(err);
-            db.rollback(() => {
-              res
-                .status(500)
-                .json({ error: "Error inserting data into the database" });
-            });
-            return;
-          }
+        // Insert into borrowing table
+        const borrowSql =
+          "INSERT INTO Borrowing (UserID, BookID, BorrowDate, ReturnDate, Status) VALUES (?, ?, ?, ?, 'borrowed')";
 
-          const insertedBookingId = result.insertId;
+        const returnDate = new Date();
+        returnDate.setHours(returnDate.getHours() + 7);
+        returnDate.setDate(today.getDate() + 14);
 
-          // Update booking status to 'borrowed'
-          const updateBookingSql =
-            'UPDATE booking SET Status = "borrowed" WHERE BookingID = ?';
-          db.query(updateBookingSql, [bookingId], (err) => {
+        const formattedReturnDate = returnDate.toISOString().slice(0, 19).replace("T", " ");
+
+        db.query(
+          borrowSql,
+          [
+            userId,
+            bookId,
+            today.toISOString().slice(0, 19).replace("T", " "),
+            formattedReturnDate,
+          ],
+          (err, result) => {
             if (err) {
               console.error(err);
               db.rollback(() => {
                 res
                   .status(500)
-                  .json({ error: "Error updating booking status" });
+                  .json({ error: "Error inserting data into the database" });
               });
               return;
             }
 
-            // Commit the transaction
-            db.commit((err) => {
+            const insertedBorrowingId = result.insertId;
+
+            // Update booking status to 'borrowed'
+            const updateBookingSql =
+              'UPDATE booking SET Status = "borrowed" WHERE BookingID = ?';
+            db.query(updateBookingSql, [bookingId], (err) => {
               if (err) {
                 console.error(err);
                 db.rollback(() => {
                   res
                     .status(500)
-                    .json({ error: "Error committing transaction" });
+                    .json({ error: "Error updating booking status" });
                 });
                 return;
               }
-              res.json({ id: insertedBookingId });
+
+              // Commit the transaction
+              db.commit((err) => {
+                if (err) {
+                  console.error(err);
+                  db.rollback(() => {
+                    res
+                      .status(500)
+                      .json({ error: "Error committing transaction" });
+                  });
+                  return;
+                }
+                res.json({ id: insertedBorrowingId });
+              });
             });
-          });
-        }
-      );
+          }
+        );
+      });
     });
   });
 });
+
 
 router.post("/book/return", (req, res) => {
   const { borrowedId } = req.body;
@@ -185,7 +207,7 @@ router.post("/book/return", (req, res) => {
 
               // Update book status to 0 (available)
               const updateBookStatusSql =
-                "UPDATE Book SET Status = 0 WHERE BookID = ?";
+                "UPDATE Book SET Status = 'available' WHERE BookID = ?";
               db.query(updateBookStatusSql, [bookId], (err) => {
                 if (err) {
                   console.error(err);
@@ -217,7 +239,7 @@ router.post("/book/return", (req, res) => {
             // No 'fine' transaction, proceed with the book return process
             // Update book status to 0 (available)
             const updateBookStatusSql =
-              "UPDATE book SET Status = 0 WHERE BookID = ?";
+              "UPDATE book SET Status = 'available' WHERE BookID = ?";
             db.query(updateBookStatusSql, [bookId], (err) => {
               if (err) {
                 console.error(err);

@@ -6,7 +6,6 @@ import { capitalizeFirstLetter } from "../Config";
 import { useUser } from "../Context/UserContext";
 import { FormatDate, FormatISBN } from "../Config";
 
-
 const BookDetailsPage = () => {
   const { bookID } = useParams();
   const { book, setBook } = useBook();

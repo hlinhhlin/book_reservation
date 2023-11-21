@@ -364,67 +364,85 @@ router.get("/profile/:id", (req, res) => {
 
 router.post("/book/reserve", (req, res) => {
   const { userId, bookId } = req.body;
-  const today = new Date();
-  const receivedDueDate = new Date(today);
-  receivedDueDate.setDate(today.getDate() + 7);
 
-  const reserveSql =
-    "INSERT INTO booking (UserID, BookID, BookingDate, ReceiveDueDate, Status) VALUES (?, ?, ?, ?, 'booked')";
-
-  // Transaction to ensure both INSERT and UPDATE queries are executed or none
-  db.beginTransaction((err) => {
+  // Check if the user has more than 5 bookings
+  const countBookingsSql = "SELECT COUNT(*) AS bookingCount FROM booking WHERE UserID = ? AND Status ='booked'";
+  db.query(countBookingsSql, [userId], (err, result) => {
     if (err) {
       console.error(err);
-      res.status(500).json({ error: "Error beginning transaction" });
+      res.status(500).json({ error: "Error checking user bookings" });
       return;
     }
-    // Insert into booking table
-    db.query(
-      reserveSql,
-      [
-        userId,
-        bookId,
-        today,
-        receivedDueDate.toISOString().slice(0, 19).replace("T", " "),
-      ],
-      (err, result) => {
-        if (err) {
-          console.error(err);
-          db.rollback(() => {
-            res
-              .status(500)
-              .json({ error: "Error inserting data into the database" });
-          });
-          return;
-        }
 
-        const insertedBookingId = result.insertId;
+    const bookingCount = result[0].bookingCount;
 
-        // Update book status to 1
-        const updateBookSql = "UPDATE book SET Status = 'unavailable' WHERE BookID = ?";
-        db.query(updateBookSql, [bookId], (err) => {
+    if (bookingCount >= 5) {
+      res.status(400).json({ error: "User has reached the maximum number of bookings (5)" });
+      return;
+    }
+
+    const today = new Date();
+    today.setHours(today.getHours() + 7); // Adding 7 hours to set it to GMT+7
+    const receivedDueDate = new Date(today);
+    receivedDueDate.setDate(today.getDate() + 7);
+
+    const reserveSql =
+      "INSERT INTO booking (UserID, BookID, BookingDate, ReceiveDueDate, Status) VALUES (?, ?, ?, ?, 'booked')";
+
+    // Transaction to ensure both INSERT and UPDATE queries are executed or none
+    db.beginTransaction((err) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({ error: "Error beginning transaction" });
+        return;
+      }
+      
+      // Insert into booking table
+      db.query(
+        reserveSql,
+        [
+          userId,
+          bookId,
+          today,
+          receivedDueDate.toISOString().slice(0, 19).replace("T", " "),
+        ],
+        (err, result) => {
           if (err) {
             console.error(err);
             db.rollback(() => {
-              res.status(500).json({ error: "Error updating book status" });
+              res.status(500).json({ error: "Error inserting data into the database" });
             });
             return;
           }
 
-          // Commit the transaction
-          db.commit((err) => {
+          const insertedBookingId = result.insertId;
+
+          // Update book status to 1
+          const updateBookSql = "UPDATE book SET Status = 'unavailable' WHERE BookID = ?";
+          db.query(updateBookSql, [bookId], (err) => {
             if (err) {
               console.error(err);
               db.rollback(() => {
-                res.status(500).json({ error: "Error committing transaction" });
+                res.status(500).json({ error: "Error updating book status" });
               });
               return;
             }
-            res.json({ id: insertedBookingId });
+
+            // Commit the transaction
+            db.commit((err) => {
+              if (err) {
+                console.error(err);
+                db.rollback(() => {
+                  res.status(500).json({ error: "Error committing transaction" });
+                });
+                return;
+              }
+              res.json({ id: insertedBookingId, date: today });
+            });
           });
-        });
-      }
-    );
+        }
+      );
+    });
   });
 });
 
