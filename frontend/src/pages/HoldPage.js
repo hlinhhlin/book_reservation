@@ -189,10 +189,8 @@ const HoldPage = () => {
                         variant="body1"
                         style={{ color: "black" }}
                       >
-                        {title}
-                        <br />
-                        {penName}
-                        <br />
+                        <span style={{ fontWeight: 'bold' }}>{title}</span><br />
+                        <span style={{ fontWeight: 'bold' }}>{penName}</span><br />
                         ISBN: {FormatISBN(isbn)}
                         <br />
                         Genre: {genre}

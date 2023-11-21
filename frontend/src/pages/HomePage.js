@@ -54,7 +54,7 @@ function HomePage() {
 
   return (
     <Box>
-      <Typography variant="h5" style={{ marginTop: "30px", marginLeft: "30px", marginBottom: "30px", fontWeight: "5000"}}>Genre</Typography>
+      <Typography variant="h5" style={{ marginTop: "30px", marginLeft: "30px", marginBottom: "30px", fontWeight: "bolder"}}>Genre</Typography>
       <div className="book-grid">
         {genres.map(({ GenreName, GenreImage }) => (
         <div className="book-item" key={GenreName} onClick={() => handleClickGenre(GenreName)}>

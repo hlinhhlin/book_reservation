@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Typography, Divider, Paper } from "@mui/material";
+import { Box, Typography, Paper } from "@mui/material";
 import { useGenre } from "../Context/GenreContext";
 import { useParams, useNavigate } from "react-router-dom";
 import { capitalizeFirstLetter } from "../Config";
@@ -51,7 +51,7 @@ const GenreBookPage = () => {
                 alt="Book Cover"
               />
               <div className="book-details">
-                <Typography variant="h5">{Title}</Typography>
+                <Typography variant="h5" style={{marginBottom: "10px", fontWeight: "bolder"}}>{Title}</Typography>
                 <Typography>Author: {PenName}</Typography>
                 <Typography>Publisher: {PublisherName}</Typography>
                 <Typography>Status: {capitalizeFirstLetter(Status)}</Typography>

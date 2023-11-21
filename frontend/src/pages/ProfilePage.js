@@ -10,6 +10,7 @@ const ProfilePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [totalAmount, setTotalAmount] = useState(0);
+  const [inputAmount, setInputAmount] = useState('');
 
   const handleEditClick = () => {
     navigate("/editprofile");
@@ -50,14 +51,8 @@ const ProfilePage = () => {
           (total, item) => total + item.Amount,
           0
         );
-  
-        // Check if there's a selected amount from the TopUpPage
-        if (location.state && location.state.totalAmount !== undefined) {
-          const selectedAmount = parseInt(location.state.totalAmount, 10);
-          setTotalAmount(sumAmount + selectedAmount); // Update the total amount
-        } else {
-          setTotalAmount(sumAmount);
-        }
+
+        setTotalAmount(sumAmount);
       })
       .catch((error) => {
         console.log("Error fetching transactions:", error);

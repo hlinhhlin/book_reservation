@@ -55,13 +55,13 @@ const SearchPage = () => {
         variant="contained"
         color="primary"
         onClick={handleSubmit}
-        style={{ marginLeft: "30px", marginBottom: "20px", marginTop: "40px" }}
+        style={{ marginLeft: "30px", marginBottom: "20px", marginTop: "40px", fontSize: "15px", fontWeight: "bold" }}
       >
         Search
       </Button>
       <Typography
         variant="h5"
-        style={{ marginLeft: "30px", marginBottom: "40px", fontWeight: "1000"}}
+        style={{ marginLeft: "30px", marginBottom: "40px", fontWeight: "1000px"}}
       >
         New Arrival
       </Typography>
