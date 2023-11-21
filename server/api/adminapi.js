@@ -355,4 +355,31 @@ router.post("/transaction/fine/updateAmount", (req, res) => {
   });
 });
 
+router.delete('/book/:bookId', (req, res) => {
+  const bookId = req.params.bookId;
+
+  // Check if the bookId is provided
+  if (!bookId) {
+    return res.status(400).json({ error: 'Book ID is required for deletion' });
+  }
+
+  // SQL query to delete the book
+  const deleteBookSql = 'DELETE FROM Book WHERE BookID = ?';
+
+  db.query(deleteBookSql, [bookId], (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Error deleting book from the database' });
+    }
+
+    // Check if the book was found and deleted
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Book not found' });
+    }
+
+    res.json({ message: 'Book deleted successfully' });
+  });
+});
+
+
 module.exports = router;
