@@ -5,7 +5,7 @@ const db = require("../db"); // Import the 'db' connection module
 router.post("/book/borrow", (req, res) => {
   const { bookingId } = req.body;
   const today = new Date();
-  today.setHours(today.getHours() + 7); // Adding 7 hours to set it to GMT+7
+  // today.setHours(today.getHours() + 7); // Adding 7 hours to set it to GMT+7
 
   // Transaction to ensure both INSERT and UPDATE queries are executed or none
   db.beginTransaction((err) => {
@@ -59,18 +59,16 @@ router.post("/book/borrow", (req, res) => {
           "INSERT INTO Borrowing (UserID, BookID, BorrowDate, ReturnDate, Status) VALUES (?, ?, ?, ?, 'borrowed')";
 
         const returnDate = new Date();
-        returnDate.setHours(returnDate.getHours() + 7);
+        // returnDate.setHours(returnDate.getHours() + 7);
         returnDate.setDate(today.getDate() + 14);
-
-        const formattedReturnDate = returnDate.toISOString().slice(0, 19).replace("T", " ");
 
         db.query(
           borrowSql,
           [
             userId,
             bookId,
-            today.toISOString().slice(0, 19).replace("T", " "),
-            formattedReturnDate,
+            today,
+            returnDate,
           ],
           (err, result) => {
             if (err) {
@@ -356,5 +354,32 @@ router.post("/transaction/fine/updateAmount", (req, res) => {
     );
   });
 });
+
+router.delete('/book/:bookId', (req, res) => {
+  const bookId = req.params.bookId;
+
+  // Check if the bookId is provided
+  if (!bookId) {
+    return res.status(400).json({ error: 'Book ID is required for deletion' });
+  }
+
+  // SQL query to delete the book
+  const deleteBookSql = 'DELETE FROM Book WHERE BookID = ?';
+
+  db.query(deleteBookSql, [bookId], (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Error deleting book from the database' });
+    }
+
+    // Check if the book was found and deleted
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Book not found' });
+    }
+
+    res.json({ message: 'Book deleted successfully' });
+  });
+});
+
 
 module.exports = router;
