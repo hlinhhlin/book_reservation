@@ -123,22 +123,23 @@ const BookDetailsPage = () => {
                   position: 'absolute',
                   top: 129,
                   maxHeight:"1000px",
-                  height : 'auto',
+                  height : '300px',
                   width:"auto"
               
                 }}
               />
               <div className="book-details">
-              <Typography variant="h5" style={{ fontWeight: 900, fontSize: '2em',marginLeft: "225px"}}>{book.Title}</Typography>
-              <Typography style={{ fontWeight: 900, fontSize: '2em',marginLeft: "225px" }}>By {book.PenName}</Typography>
-                <Typography style={{ marginLeft: "225px" }}>ISBN: {FormatISBN(book.ISBN)}</Typography>
-                <Typography style={{ marginLeft: "225px" }}>Genre: {book.GenreName}</Typography>
-                <Typography style={{ marginLeft: "225px" }}>Publisher: {book.PublisherName}</Typography>
+              <Typography variant="h5" style={{ fontWeight: 900, fontSize: '2em',marginLeft: "225px",marginTop: "20px" ,marginBottom: "-10px"}}>{book.Title}</Typography>
+              <Typography style={{ fontWeight: 900, fontSize: '2em',marginLeft: "225px", marginBottom: "5px" }}>By {book.PenName}</Typography>
+                <Typography style={{ marginLeft: "225px", marginBottom: "-5px" }}>ISBN: {FormatISBN(book.ISBN)}</Typography>
+                <Typography style={{ marginLeft: "225px", marginBottom: "-5px" }}>Genre: {book.GenreName}</Typography>
+                <Typography style={{ marginLeft: "225px", marginBottom: "-5px" }}>Publisher: {book.PublisherName}</Typography>
                 <Typography style={{ marginLeft: "225px" }}>
                   Status:{" "}
                   <span
                     style={{
-                      color: book.Status === "unavailable" ? "red" : "green"
+                      color: book.Status === "unavailable" ? "red" : "green",
+                      fontWeight: "bolder"
                     }}
                   >
                     {capitalizeFirstLetter(book.Status)}
@@ -151,13 +152,13 @@ const BookDetailsPage = () => {
                   disabled={isReserved}
                   style={{
                     height: "45px",
-                    width: "100px",
-                    marginTop: "5px",
-                    marginRight: "5px",
+                    width: "150px",
+                    marginTop: "15px",
                     marginLeft: "225px",
                     // Adjusted to align with the right end of the container
                     color: "white",
-                    fontWeight: "bolder"
+                    fontWeight: "bolder",
+                    fontSize: "18px"
                   }}
                 >
                   {isReserved ? "Reserved" : "Reserve"}
@@ -240,18 +241,18 @@ const BookDetailsPage = () => {
           </>
         ) : (
           <Typography
-            style={{
-              fontSize: "30px",
-              color: "#000000",
-              backgroundColor: "#ffd2cf",
-              border: "1px solid red",
-              borderRadius: "15px",
-              padding: "3px 15px",
-              display: "inline-block",
-              margin: "340px 590px",
+          style={{
+            fontSize: "20px",
+            color: "#000000",
+            backgroundColor: "#ffd2cf",
+            border: "1px solid red",
+            borderRadius: "15px",
+            padding: "3px 15px",
+            display: "inline-block",
+            margin: "340px 590px",
             }}
           >
-            No book data available
+            No book data available.
           </Typography>
         )}
       </Paper>

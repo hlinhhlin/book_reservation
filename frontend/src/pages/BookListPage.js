@@ -49,14 +49,15 @@ const BookListPage = () => {
                   alt="Book Cover"
                 />
                 <div className="book-details">
-                  <Typography variant="h5">{Title}</Typography>
-                  <Typography>Author: {PenName}</Typography>
-                  <Typography>Publisher: {PublisherName}</Typography>
+                  <Typography variant="h5" style={{cursor: "pointer"}}>{Title}</Typography>
+                  <Typography style={{cursor: "pointer"}}>Author: {PenName}</Typography>
+                  <Typography style={{cursor: "pointer"}}>Publisher: {PublisherName}</Typography>
                   <Typography>
                     Status:{" "}
                     <span
-                      style={{
+                      style={{ 
                         color: Status === "unavailable" ? "red" : "green",
+                        cursor: "pointer"
                       }}
                     >
                       {capitalizeFirstLetter(Status)}
