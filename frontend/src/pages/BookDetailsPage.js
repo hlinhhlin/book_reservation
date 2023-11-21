@@ -35,8 +35,6 @@ const BookDetailsPage = () => {
   }, [bookID, setBook]);
 
   const handleReserveClickOpen = (title, penName, ISBN, genre, publisher) => {
-
-    
     setISBN(ISBN);
     setGenre(genre);
     setPublisher(publisher);
@@ -50,7 +48,6 @@ const BookDetailsPage = () => {
   };
 
   const handleConfirm = () => {
-
     if (!user || !user.id) {
       // User is not signed in, navigate to sign-in page
       navigate("/signup"); 
@@ -74,11 +71,9 @@ const BookDetailsPage = () => {
       .then((data) => {
         // Handle the response from the API
         console.log(data.message); // Log or handle the success message
-  
         // Update the bookData state with the new data
         setBook((prevBookData) => {
           // Find the index of the canceled booking in the current bookData
-  
           return prevBookData; // If the booking is not found, return the current state unchanged
         });
         setSnackbarOpen(true); // Show success snackbar

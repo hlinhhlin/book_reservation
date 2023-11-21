@@ -382,7 +382,6 @@ router.post("/book/reserve", (req, res) => {
     }
 
     const today = new Date();
-    today.setHours(today.getHours() + 7); // Adding 7 hours to set it to GMT+7
     const receivedDueDate = new Date(today);
     receivedDueDate.setDate(today.getDate() + 7);
 
@@ -404,7 +403,7 @@ router.post("/book/reserve", (req, res) => {
           userId,
           bookId,
           today,
-          receivedDueDate.toISOString().slice(0, 19).replace("T", " "),
+          receivedDueDate
         ],
         (err, result) => {
           if (err) {
