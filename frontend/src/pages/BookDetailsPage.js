@@ -21,7 +21,6 @@ const BookDetailsPage = () => {
   const date = new Date();
   const navigate = useNavigate();
   
-
   useEffect(() => {
     fetch(`http://localhost:5050/user/book/${bookID}`)
       .then((response) => response.json())
@@ -34,9 +33,7 @@ const BookDetailsPage = () => {
       });
   }, [bookID, setBook]);
 
-  const handleReserveClickOpen = (title, penName, ISBN, genre, publisher) => {
-
-    
+  const handleReserveClickOpen = (title, penName, ISBN, genre, publisher) => { 
     setISBN(ISBN);
     setGenre(genre);
     setPublisher(publisher);
@@ -50,7 +47,6 @@ const BookDetailsPage = () => {
   };
 
   const handleConfirm = () => {
-
     if (!user || !user.id) {
       // User is not signed in, navigate to sign-in page
       navigate("/signup"); 
@@ -70,26 +66,27 @@ const BookDetailsPage = () => {
         bookId: bookID,
       }),
     })
-      .then((response) => response.json())
-      .then((data) => {
-        // Handle the response from the API
-        console.log(data.message); // Log or handle the success message
-  
-        // Update the bookData state with the new data
-        setBook((prevBookData) => {
-          // Find the index of the canceled booking in the current bookData
-  
-          return prevBookData; // If the booking is not found, return the current state unchanged
-        });
-        setSnackbarOpen(true); // Show success snackbar
-      })
-      .catch((error) => {
-        console.error("Error canceling reservation:", error);
-        // Handle the error, show an error snackbar, or other error handling logic
-      })
-      .finally(() => {
-        setOpen(false); // Close the dialog regardless of success or failure
-      });
+    .then((response) => {
+      if (!response.ok) {
+        if (response.status === 400) {
+          return response.json().then((data) => {
+            // Display error popup for maximum bookings reached
+            alert(data.error); // For demonstration purposes; use your preferred method for showing a popup
+          });
+        }
+        throw new Error('Failed to reserve the book');
+      }
+      // Handle success when the user can reserve the book
+      console.log('Book reserved successfully');
+      // Perform actions for successful booking
+    })
+    .catch((error) => {
+      console.error('Error reserving book:', error);
+      // Handle other errors such as network issues or server errors
+    })
+    .finally(() => {
+      setOpen(false); // Close the dialog regardless of success or failure
+    });
   };
 
   const handleSnackbarClose = () => {

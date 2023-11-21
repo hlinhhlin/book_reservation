@@ -50,7 +50,7 @@ const GenreBookPage = () => {
                 src={`data:image/jpeg;base64,${arrayBufferToBase64(BookImage.data)}`}
                 alt="Book Cover"
               />
-              <div className="book-details">
+              <div className="book-details" style={{cursor: "pointer" }}>
                 <Typography variant="h5" style={{marginBottom: "10px", fontWeight: "bolder"}}>{Title}</Typography>
                 <Typography>Author: {PenName}</Typography>
                 <Typography>Publisher: {PublisherName}</Typography>

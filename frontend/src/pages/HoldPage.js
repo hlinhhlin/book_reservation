@@ -170,6 +170,7 @@ const HoldPage = () => {
                 onClose={handleClose}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
+                BackdropProps={{ invisible: true}}
               >
                 <DialogTitle
                     id="alert-dialog-title"
@@ -189,8 +190,8 @@ const HoldPage = () => {
                         variant="body1"
                         style={{ color: "black" }}
                       >
-                        <span style={{ fontWeight: 'bold' }}>{title}</span><br />
-                        <span style={{ fontWeight: 'bold' }}>{penName}</span><br />
+                        <span style={{ fontWeight: 'bolder' }}>{title}</span><br />
+                        <span style={{ fontWeight: 'bolder' }}>{penName}</span><br />
                         ISBN: {FormatISBN(isbn)}
                         <br />
                         Genre: {genre}
