@@ -298,10 +298,16 @@ router.post("/addUser", (req, res) => {
 });
 
 
-//LogInUser
+// LogInUser
 router.post("/authenticateUser", async (req, res) => {
   try {
     const { username, password } = req.body;
+
+    // Validate username to ensure it doesn't contain special characters
+    const usernameRegex = /^[a-zA-Z0-9_]+$/; // Only allows alphanumeric characters and underscores
+    if (!usernameRegex.test(username)) {
+      return res.status(400).json({ error: "Invalid username format" });
+    }
 
     // Find the user in the database by username
     const query = "SELECT * FROM User WHERE Username = ?";
@@ -333,7 +339,7 @@ router.post("/authenticateUser", async (req, res) => {
           province: user.Add_Province,
           zipcode: user.Add_ZipCode,
           username: user.Username,
-          //UserImage
+          // UserImage
         });
       } else {
         // If passwords do not match, return an error
@@ -345,6 +351,7 @@ router.post("/authenticateUser", async (req, res) => {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
 
 router.get("/profile/:id", (req, res) => {
   const userId = req.params.id;
