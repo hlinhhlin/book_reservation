@@ -3,9 +3,9 @@ const mysql = require('mysql');
 // Define your MySQL database connection
 const db = mysql.createConnection({
   host: 'localhost',
-  user: 'root',
-  password: 'root',
-  database: 'book-reservation',
+  user: 'user',
+  password: 'password',
+  database: 'book_reservation',
 });
 
 // Connect to the database;

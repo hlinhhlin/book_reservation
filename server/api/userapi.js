@@ -444,79 +444,27 @@ router.post("/book/reserve", (req, res) => {
     });
   });
 });
-
 //Cancel the reservation
-router.post("/book/cancelReservation", (req, res) => {
+router.post('/book/cancelReservation', (req, res) => {
   const { bookingId } = req.body;
 
-  // Transaction to ensure both DELETE and UPDATE queries are executed or none
-  db.beginTransaction((err) => {
-    if (err) {
-      console.error(err);
-      res.status(500).json({ error: "Error beginning transaction" });
-      return;
-    }
-
-    // Get the book ID before deleting the booking record
-    const getBookIdSql = "SELECT BookID FROM booking WHERE BookingID = ?";
-    db.query(getBookIdSql, [bookingId], (err, results) => {
+  // Call the stored procedure
+  db.query(
+    'CALL CancelReservation(?)',
+    [bookingId],
+    (err, results) => {
       if (err) {
         console.error(err);
-        db.rollback(() => {
-          res.status(500).json({ error: "Error retrieving book ID" });
-        });
+        res.status(500).json({ error: 'Error calling stored procedure' });
         return;
       }
 
-      if (results.length === 0) {
-        db.rollback(() => {
-          res.status(404).json({ error: "Booking not found" });
-        });
-        return;
-      }
-
-      const bookId = results[0].BookID;
-
-      // Delete the booking record
-      const updateBookingSql =
-        'UPDATE booking SET Status = "canceled" WHERE BookingID = ?';
-      db.query(updateBookingSql, [bookingId], (err) => {
-        if (err) {
-          console.error(err);
-          db.rollback(() => {
-            res.status(500).json({ error: "Error canceling reservation" });
-          });
-          return;
-        }
-
-        // Update book status to 0 (available)
-        const updateBookSql = "UPDATE book SET Status = 'available' WHERE BookID = ?";
-        db.query(updateBookSql, [bookId], (err) => {
-          if (err) {
-            console.error(err);
-            db.rollback(() => {
-              res.status(500).json({ error: "Error updating book status" });
-            });
-            return;
-          }
-
-          // Commit the transaction
-          db.commit((err) => {
-            if (err) {
-              console.error(err);
-              db.rollback(() => {
-                res.status(500).json({ error: "Error committing transaction" });
-              });
-              return;
-            }
-
-            res.json({ message: "Reservation canceled successfully" });
-          });
-        });
-      });
-    });
-  });
+      const result = results[0][0];
+      res.json(result);
+    }
+  );
 });
+
 
 router.get("/checkout/:id", (req, res) => {
   const userId = req.params.id;
