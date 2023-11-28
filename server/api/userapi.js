@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const bcrypt = require('bcrypt');
 const db = require("../db"); // Import the 'db' connection module
 
 //HomePage
@@ -132,44 +133,52 @@ router.get("/transaction/:id", (req, res) => {
 });
 
 //SignUpUser
-router.post("/addUser", (req, res) => {
-  const {
-    firstname,
-    lastname,
-    tel,
-    email,
-    no,
-    soi,
-    street,
-    subdistrict,
-    district,
-    province,
-    zipcode,
-    username,
-    password,
-  } = req.body;
+router.post("/addUser", async (req, res) => {
+  try {
+    const {
+      firstname,
+      lastname,
+      tel,
+      email,
+      no,
+      soi,
+      street,
+      subdistrict,
+      district,
+      province,
+      zipcode,
+      username,
+      password,
+    } = req.body;
 
-  // Combine address fields into a single string
-  const address =
-    `${no} ${soi} ${street}, ${subdistrict}, ${district}, ${province} ${zipcode}`;
+    // Combine address fields into a single string
+    const address =
+      `${no} ${soi} ${street}, ${subdistrict}, ${district}, ${province} ${zipcode}`;
 
-  const sql =
-    "INSERT INTO User (FirstName, LastName, TelNumber, Email, Address, Username, Password) VALUES (?, ?, ?, ?, ?, ?, ?)";
-  db.query(
-    sql,
-    [firstname, lastname, tel, email, address, username, password],
-    (err, result) => {
-      if (err) {
-        console.error(err);
-        res
-          .status(500)
-          .json({ error: "Error inserting data into the database" });
-      } else {
-        const userId = result.insertId; // Retrieve the last inserted ID
-        res.json({ id: userId });
+    // Hash the password using bcrypt
+    const hashedPassword = await bcrypt.hash(password, 10); // 10 is the salt rounds
+
+    const sql =
+      "INSERT INTO User (FirstName, LastName, TelNumber, Email, Address, Username, Password) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    db.query(
+      sql,
+      [firstname, lastname, tel, email, address, username, hashedPassword],
+      (err, result) => {
+        if (err) {
+          console.error(err);
+          res
+            .status(500)
+            .json({ error: "Error inserting data into the database" });
+        } else {
+          const userId = result.insertId; // Retrieve the last inserted ID
+          res.json({ id: userId });
+        }
       }
-    }
-  );
+    );
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
 // LogInUser
@@ -197,8 +206,10 @@ router.post("/authenticateUser", async (req, res) => {
 
       const user = results[0];
 
-      // Check if the entered password matches the stored password
-      if (password === user.Password) {
+      // Compare the entered password with the stored hashed password
+      const passwordMatch = await bcrypt.compare(password, user.Password);
+
+      if (passwordMatch) {
         return res.json({
           id: user.UserID,
           firstname: user.FirstName,
@@ -225,6 +236,7 @@ router.post("/authenticateUser", async (req, res) => {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
 
 router.get("/profile/:id", (req, res) => {
   const userId = req.params.id;
