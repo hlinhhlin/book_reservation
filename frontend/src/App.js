@@ -22,8 +22,6 @@ import { GenreProvider } from "./Context/GenreContext";
 import { SearchProvider } from "./Context/SearchContext";
 import { BookProvider } from "./Context/BookContext";
 
-
-
 export default function App() {
   return (
     <AuthProvider>
@@ -48,7 +46,6 @@ export default function App() {
                     <Route path="/bookFine" element={<BookFinePage />} />
                     <Route path="/bookslist" element={<BookListPage />} />
                     <Route exact path="/book/:bookID" element={<BookDetailsPage />} />
-
                     <Route
                       path="/transactionHistory"
                       element={<TransactionHistoryPage />}
